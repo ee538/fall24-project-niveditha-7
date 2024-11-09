@@ -151,6 +151,8 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name) {
    
   return results;
 }
+//run time of auto complete -- answer : runtime of auto complete : Iterating through all the nodes -> O(n);
+//converting each string to lower -> O(l) so combines run time complexity is O(n*l).
 
 /**
  * GetAllCategories: Return all the possible unique location categories, i.e.
