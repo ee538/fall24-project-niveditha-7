@@ -91,7 +91,7 @@ std::string TrojanMap::GetID(const std::string &name) {
  * @param  {std::string} name          : location name
  * @return {std::pair<double,double>}  : (lat, lon)
  */
-std::pair<double, double> TrojanMap::GetPosition(std::string name) {
+std::pair<double, double> TrojanMap::GetPosition(std::string name) { //
 
   std::pair<double, double> results(-1, -1);
 std::string id = GetID(name);
