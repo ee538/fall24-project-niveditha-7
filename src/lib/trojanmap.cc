@@ -10,8 +10,13 @@
  * @param  {std::string} id : location id
  * @return {double}         : latitude
  */
-double TrojanMap::GetLat(const std::string &id) { 
-  return 0;
+double TrojanMap::GetLat(const std::string &id) { //using lookup method at and count to get Latt of thaat particular id 
+  if(data.count(id)>0)
+  {
+    return data.at(id).lat;
+  }
+  else
+    return -1;
 }
 
 /**
@@ -22,7 +27,12 @@ double TrojanMap::GetLat(const std::string &id) {
  * @return {double}         : longitude
  */
 double TrojanMap::GetLon(const std::string &id) {
-  return 0;
+    if(data.count(id)>0)
+  {
+    return data.at(id).lon;
+  }
+  else
+    return -1;
 }
 
 /**
@@ -33,7 +43,12 @@ double TrojanMap::GetLon(const std::string &id) {
  * @return {std::string}    : name
  */
 std::string TrojanMap::GetName(const std::string &id) {
-  return "";
+    if(data.count(id)>0)
+  {
+    return data.at(id).name;
+  }
+  else
+    return "NULL";
 }
 
 /**
@@ -57,6 +72,15 @@ std::vector<std::string> TrojanMap::GetNeighborIDs(const std::string &id) {
  */
 std::string TrojanMap::GetID(const std::string &name) {
   std::string res = "";
+  for(const auto& node:data)
+  {
+
+    if (node.second.name ==  name)
+    {
+      res=node.first;
+      break;
+    }
+  }
   return res;
 }
 
@@ -68,7 +92,15 @@ std::string TrojanMap::GetID(const std::string &name) {
  * @return {std::pair<double,double>}  : (lat, lon)
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) {
+
   std::pair<double, double> results(-1, -1);
+std::string id = GetID(name);
+  if(id!="")
+  {
+    results.first = GetLat(id);
+    results.second= GetLon(id);
+  }
+
   return results;
 }
 
@@ -94,6 +126,8 @@ std::string TrojanMap::FindClosestName(std::string name) {
   return tmp;
 }
 
+
+
 /**
  * Autocomplete: Given a parital name return all the possible locations with
  * partial name as the prefix. The function should be case-insensitive.
@@ -103,6 +137,18 @@ std::string TrojanMap::FindClosestName(std::string name) {
  */
 std::vector<std::string> TrojanMap::Autocomplete(std::string name) {
   std::vector<std::string> results;
+  std::transform(name.begin(), name.end(), name.begin(), ::tolower);
+  for(const auto& node:data)//traverse throough all  nodes 
+  {
+    std:: string nodeName = node.second.name;
+    if(nodeName.size()<name.size()){continue;} //skip if the input name is longer than the present node
+    std::transform(nodeName.begin(), nodeName.end(),nodeName.begin(), ::tolower);//convert the preseent nodettto lower case for comparison
+    if(nodeName.substr(0, name.size())==name)//checking if the input name is present as substring in the found node.
+    {
+      results.push_back(node.second.name);
+    }
+  }
+   
   return results;
 }
 
