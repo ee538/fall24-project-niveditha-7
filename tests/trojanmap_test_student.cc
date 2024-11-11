@@ -6,12 +6,39 @@ TEST(TrojanMapStudentTest, Test1) {
 }
 
 // Phase 1
-// Test Autocomplete function
+
+
+
+
+// Test FindPosition function
+TEST(TrojanMapTest, FindPosition) {
+  TrojanMap m;
+  
+  // Test Tommy Trojan
+  auto position = m.GetPosition("Tommy Trojan");
+  std::pair<double, double> gt1(34.0205678, -118.2854346); // groundtruth for "Tommy Trojan"
+  EXPECT_EQ(position, gt1);
+  // Test Cosmo Plaza
+  position = m.GetPosition("Cosmo Plaza");
+  std::pair<double, double> gt2(34.0396911, -118.2547056); // groundtruth for "Cosmo Plaza"
+  EXPECT_EQ(position, gt2);
+  // Test The Mirage
+  position = m.GetPosition("The Mirage");
+  std::pair<double, double> gt3(34.0275051,-118.2829909); // groundtruth for "The Mirage"
+  EXPECT_EQ(position, gt3);
+  // Test Unknown
+  position = m.GetPosition("Minecraft Library");
+  std::pair<double, double> gt4(-1, -1);
+  EXPECT_EQ(position, gt4);
+}
+
+
 TEST(TrojanMapTest, Autocomplete) {
   TrojanMap m;
   // Test the simple case
-  auto names = m.Autocomplete("Chi");
-  std::unordered_set<std::string> gt = {"Chick-fil-A", "Chipotle", "Chinese Street Food"}; // groundtruth for "Ch"
+  auto names = m.Autocomplete("Ro");
+  std::unordered_set<std::string> gt = {"Rock & Reillys","Ross","Rossoblu",
+  "Roger Williams Baptist Church"}; // groundtruth for "Ch"
   int success = 0;
   for (auto& n: names) {
     EXPECT_EQ(gt.count(n) > 0, true) << n + " is not in gt.";
@@ -21,7 +48,7 @@ TEST(TrojanMapTest, Autocomplete) {
   }
   EXPECT_EQ(success, gt.size());
   // Test the lower case
-  names = m.Autocomplete("chi");
+  names = m.Autocomplete("ro");
   success = 0;
   for (auto& n: names) {
     EXPECT_EQ(gt.count(n) > 0, true) << n + " is not in gt.";
@@ -31,7 +58,7 @@ TEST(TrojanMapTest, Autocomplete) {
   }
   EXPECT_EQ(success, gt.size());
   // Test the lower and upper case 
-  names = m.Autocomplete("cHi"); 
+  names = m.Autocomplete("rO"); 
   success = 0;
   for (auto& n: names) {
     EXPECT_EQ(gt.count(n) > 0, true) << n + " is not in gt.";
@@ -41,7 +68,7 @@ TEST(TrojanMapTest, Autocomplete) {
   }
   EXPECT_EQ(success, gt.size());
   // Test the upper case 
-  names = m.Autocomplete("CHI"); 
+  names = m.Autocomplete("RO"); 
   success = 0;
   for (auto& n: names) {
     EXPECT_EQ(gt.count(n) > 0, true) << n + " is not in gt.";
@@ -50,26 +77,4 @@ TEST(TrojanMapTest, Autocomplete) {
     }
   }
   EXPECT_EQ(success, gt.size());
-}
-
-// Test FindPosition function
-TEST(TrojanMapTest, FindPosition) {
-  TrojanMap m;
-  
-  // Test Chick-fil-A
-  auto position = m.GetPosition("Chick-fil-A");
-  std::pair<double, double> gt1(34.0167334, -118.2825307); // groundtruth for "Chick-fil-A"
-  EXPECT_EQ(position, gt1);
-  // Test Ralphs
-  position = m.GetPosition("Ralphs");
-  std::pair<double, double> gt2(34.0317653, -118.2908339); // groundtruth for "Ralphs"
-  EXPECT_EQ(position, gt2);
-  // Test Target
-  position = m.GetPosition("Target");
-  std::pair<double, double> gt3(34.0257016, -118.2843512); // groundtruth for "Target"
-  EXPECT_EQ(position, gt3);
-  // Test Unknown
-  position = m.GetPosition("XXX");
-  std::pair<double, double> gt4(-1, -1);
-  EXPECT_EQ(position, gt4);
 }

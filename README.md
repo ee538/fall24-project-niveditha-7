@@ -243,7 +243,10 @@ Time taken by function: 2 ms
 
 - What is the runtime of your algorithm? 
 - (Optional) Can you do it faster than `O(n)`?
-
+answer : runtime of auto complete : Iterating through all the nodes -> O(n);
+converting each string to lower -> O(l) so combines run time complexity is O(n*l).
+ 
+ 
 ## Item 2-1: Find the place's coordinates in the Map (Phase 1)
 
 ```c++

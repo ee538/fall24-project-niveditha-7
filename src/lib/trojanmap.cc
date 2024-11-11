@@ -93,7 +93,10 @@ std::string TrojanMap::GetID(const std::string &name) {
  */
 std::pair<double, double> TrojanMap::GetPosition(std::string name) { //
 
-  std::pair<double, double> results(-1, -1);
+std::pair<double, double> results(-1, -1);
+if (name.empty()) {
+    return results;
+  }
 std::string id = GetID(name);
   if(id!="")
   {
@@ -137,6 +140,9 @@ std::string TrojanMap::FindClosestName(std::string name) {
  */
 std::vector<std::string> TrojanMap::Autocomplete(std::string name) {
   std::vector<std::string> results;
+   if (name.empty()) {
+    return results;
+  }
   std::transform(name.begin(), name.end(), name.begin(), ::tolower);
   for(const auto& node:data)//traverse throough all  nodes 
   {
