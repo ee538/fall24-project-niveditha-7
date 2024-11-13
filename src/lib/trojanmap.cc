@@ -1,5 +1,5 @@
 #include "trojanmap.h"
-
+#include <unordered_map>
 //-----------------------------------------------------
 // TODO: Students should implement the following:
 //-----------------------------------------------------
@@ -250,7 +250,82 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
-  std::vector<std::string> path;
+  
+  std::vector<std::string> path;// to store the final path
+  if(location1_name ==location2_name)
+  {
+    return path;
+  }
+  //gettig IDs for start and end location
+  std::string start_location = GetID(location1_name);
+  std::string end_location = GetID(location2_name);
+  if (data.find(start_location) == data.end() || data.find(end_location) == data.end()) {
+        std::cout << "One or both locations do not exist in the map." << std::endl;
+        return {};  // Return an empty path if either location is missing
+  }
+
+  //creating an unordered map to store the shortest path from start nodes
+  std::unordered_map<std::string, double> short_distance_from_start;
+
+  //unordered map to store the previous distance 
+  std::unordered_map<std::string, std::string> prev_distance;
+  //unordered map to store the visited nodes
+  std::unordered_map<std::string, double> visited_nodes;
+
+  //auto initialising all the distances initially to infinity and setting visited to false
+  for(auto &node:data)
+  {
+    short_distance_from_start[node.first] = INT_MAX;
+    visited_nodes[node.first] = false;
+  }
+  //Set up the priority queue with pairs of distance(double) and node ID(string), and store it in vector format with min-heap structure
+  std::priority_queue<std::pair<double, std::string>,      
+  std::vector<std::pair<double, std::string>>, std::greater<std::pair<double, std::string>>> min_distance_queue;
+  // Initialize the starting node's distance to 0 and add it to the priority queue
+    short_distance_from_start[start_location] = 0; // to itself will be zero 
+    min_distance_queue.push({0, start_location});
+     // Begin Dijkstra's algorithm
+    while (!min_distance_queue.empty()) {
+        std::string current = min_distance_queue.top().second; //second gives us node ID
+        min_distance_queue.pop();
+
+        // If the node has been visited, skip it
+        if (visited_nodes[current]) continue;
+
+        // Mark the current node as visited
+        visited_nodes[current] = true;
+
+        // If we've reached the goal, break out of the loop(if currentID is eequal to end ID)
+        if (current == end_location) break;
+
+        // For each neighbor of the current node
+        for (auto &neighbor : GetNeighborIDs(current)) {
+            // Calculate distance to the neighbor
+            double weight = CalculateDistance(current, neighbor);
+            
+            // Relaxation step: check if a shorter path is found
+            if (short_distance_from_start[current] + weight < short_distance_from_start[neighbor]) {
+                short_distance_from_start[neighbor] = short_distance_from_start[current] + weight;
+                prev_distance[neighbor] = current;
+                min_distance_queue.push({short_distance_from_start[neighbor], neighbor});
+            }
+        }
+    }
+
+    // once the loop ends, trace back the path from goal to start using the `previous` map until it reaches start location
+    for (std::string at = end_location; at != ""; at = prev_distance[at]) {
+        path.push_back(at); //each node is being added to the path vector
+        if (at == start_location) break;
+    }
+
+    // Reverse to get the path from start to goal
+    std::reverse(path.begin(), path.end()); //since nodes are stored in reverse order in path
+
+    // If the start node is not in path, it means no path was found
+    if (path.empty() || path[0] != start_location) {
+        return {};  // Return empty if no valid path exists
+    }
+
   return path;
 }
 
@@ -266,6 +341,70 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
 std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
     std::string location1_name, std::string location2_name) {
   std::vector<std::string> path;
+//initila checks similar to dijkstra's
+  std::string start_location = GetID(location1_name);
+  std::string end_location = GetID(location2_name);
+
+  if (data.find(start_location) == data.end() || data.find(end_location) == data.end()) {
+      return {};  // Return an empty path if either location is missing
+  }
+
+  // Initialize distances to infinity and set the start node's distance to 0
+  std::unordered_map<std::string, double> short_distance_from_start;
+  std::unordered_map<std::string, std::string> previous;
+
+  for (auto &node : data) {
+    short_distance_from_start[node.first] = INT_MAX;
+  }
+  short_distance_from_start[start_location] = 0;
+
+  int V = data.size();
+  bool updated;
+
+  // Perform V-1 iterations of relaxation
+  for (int i = 0; i < V - 1; i++) {
+    updated = false;
+
+    // For each node, check all its neighbors
+    for (auto &node : data) {
+      std::string u = node.first;
+
+      if (short_distance_from_start[u] == INT_MAX) continue; // Skip unreachable nodes
+
+      for (auto &v : GetNeighborIDs(u)) {
+        double weight = CalculateDistance(u, v);
+
+        // Relax the edge (u, v)
+        if (short_distance_from_start[u] + weight < short_distance_from_start[v]) {
+          short_distance_from_start[v] = short_distance_from_start[u] + weight;
+          previous[v] = u;
+          updated = true; //since we are updating the distance by checking the shortest path
+        }
+      }
+    }
+
+    // If no update was made during this iteration, we terminate early
+    if (!updated) break;
+  }
+
+  // If end_location is still at infinity, no path was found
+  if (short_distance_from_start[end_location] == INT_MAX) {
+    return {};  // No path exists
+  }
+
+  // Recoverring the path from end_location to start_location
+  for (std::string at = end_location; at != ""; at = previous[at]) {
+    path.push_back(at);
+    if (at == start_location) break;
+  }
+
+  // Reverse to get the path from start to end
+  std::reverse(path.begin(), path.end());
+
+  // Verify that the path starts with start_location
+  if (path.empty() || path[0] != start_location) {
+    return {};  // Return empty if no valid path exists
+  }
   return path;
 }
 
