@@ -375,6 +375,25 @@ Please report and compare the time spent by these algorithms.
 | Point A to Point B      | Dijkstra | Bellman Ford| Bellman Ford optimized|
 | -------------------- | ----------- |-------|-----|
 |                      |  t1         | t2    |   t3  |
+|Ralphs to Target      |  56         | 5313  |       |
+|Chevron to Target     |  86         | 9060  |      |
+|Chase - Cheebos Burger|  163        | 6500  |      |
+|George Lucas Instructional Building to Arco                     |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+|                      |             |       |      |
+
 
 Your table should show have at least 15 rows.
 

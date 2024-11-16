@@ -59,7 +59,11 @@ std::string TrojanMap::GetName(const std::string &id) {
  * @return {std::vector<std::string>}  : neighbor ids
  */
 std::vector<std::string> TrojanMap::GetNeighborIDs(const std::string &id) {
-  return {};
+  if(data.find(id)!= data.end())
+  {
+    return data.at(id).neighbors;
+  }
+  return {}; //return empty if neigbours not found
 }
 
 /**
