@@ -79,37 +79,112 @@ TEST(TrojanMapTest, Autocomplete) {
   EXPECT_EQ(success, gt.size());
 }
 
-
-//phase 2 
-// Phase 2
-// Test CalculateShortestPath_Dijkstra function
+//Phase2
 TEST(TrojanMapTest, CalculateShortestPath_Dijkstra) {
   TrojanMap m;
   
-  // Test from Ralphs to Chick-fil-A
-  auto path = m.CalculateShortestPath_Dijkstra("Ralphs", "Chick-fil-A");
+  // Test from Trojan Grounds (Starbucks) to Ralphs
+  auto path = m.CalculateShortestPath_Dijkstra("Trojan Grounds (Starbucks)", "Ralphs");
   std::vector<std::string> gt{
-      "2578244375","4380040154","4380040153","4380040152","4380040148","6818427920","6818427919",
-      "6818427918","6818427892","6818427898","6818427917","6818427916","7232024780","6813416145",
-      "6813416154","6813416153","6813416152","6813416151","6813416155","6808069740","6816193785",
-      "6816193786","123152294","4015203136","4015203134","4015203133","21098539","6389467809",
-      "4015203132","3195897587","4015203129","4015203127","6352865690","6813379589","6813379483",
-      "3402887081","6814958394","3402887080","602606656","4872897515","4399697589","6814958391",
-      "123209598","6787673296","122728406","6807762271","4399697304","4399697302","5231967015",
-      "1862347583","3233702827","4540763379","6819179753","6820935900","6820935901","6813379556",
-      "6820935898","1781230450","1781230449","4015405542","4015405543","1837212104","1837212107",
-      "2753199985","6820935907","1837212100","4015372458","6813411588","1837212101","6814916516",
-      "6814916515","6820935910","4547476733"}; // Expected path
+      "614990288","1673644992","6819179775","3233762100","1771091127","6819179774",
+      "6787896179","5580902573","6814770343","3431300454","6814770351","3432332948",
+      "4536989636","3433701978","6818390136","6813379491","3443310465","4536989640",
+      "4536989637","6813379432","3402887075","6813379464","6813379465","6813379466",
+      "6813379440","5690152766","4015423966","7434941012","6818390143","63068610",
+      "6818390140","6813379476","21306059","544672028","6813379482","6813405206",
+      "123318572","5565967545","7811699597","6817230310","3642819026","6817230316",
+      "2613117861","6818390170","6818390171","6818390172","6807374562","2613117885",
+      "6818390165","2613117882","6818390178","2613117902","6813416153","6813416154",
+      "6813416145","7232024780","6818427916","6818427917","6818427898","6818427892",
+      "6818427918","6818427919","6818427920","4380040148","4380040152","4380040153",
+      "4380040154","2578244375"}; // Expected path
+  // Print the path lengths
+  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
+  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  EXPECT_EQ(path, gt);
+  
+  path = m.CalculateShortestPath_Dijkstra( "Ralphs", "Trojan Grounds (Starbucks)");
+  std::reverse(gt.begin(),gt.end()); // Reverse the path
+
+
+  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
+  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  EXPECT_EQ(path, gt);
+}
+
+// Test CalculateShortestPath_Bellman_Ford function
+TEST(TrojanMapTest, CalculateShortestPath_Bellman_Ford) {
+  TrojanMap m;
+  
+  // Test from Ralphs to Chick-fil-A
+  auto path = m.CalculateShortestPath_Bellman_Ford("Chipotle", "DASH");
+  std::vector<std::string> gt{
+      "732641023","9446678100","6820935908","216155217","6813411589","1837212103",
+      "1837212101","6820935911","932416162","4060015482","4020099365","6820972450",
+      "1732243549","6820972451","1836105028","9118747759","4060015481","4020099358",
+      "6814990127","932378141","932378142","1869431093","9118747761","1869431099",
+      "1870800157","1870800154","1870800155","1870800153","932378197","1870800152",
+      "932378196","932378195","932378167","1472141010","123166173","5707881721","213431767",
+      "213431754","1836106815","1836119958","1836106817","1836106818","932387853","213431728",
+      "6693451972","1836105952","1836106812","213431722","213431715","1836106811","123166178",
+      "1836106814","1862312619","123166179","1855173116","1630951165","1855143762","1855143765",
+      "1855143757","1630951168","6814481791","1630951209","6814481787","1630940683","6814481788",
+      "6814481789","4020099328","7591225398","1832254598","6814990096","6815190469","5618016520",
+      "7872111891","5618016821","5618016824","5618016825","6814452683","5618016826","5618016828",
+      "5618016829","5618016830","7257246599","5618016833","123152329","7257246593","4020099320",
+      "5618016838","123152331","5618016841","4020099318","6512331875","6512331876"}; // Expected path
   // Print the path lengths
   std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
   
   // Reverse the input from Ralphs to Chick-fil-A
-  path = m.CalculateShortestPath_Dijkstra("Chick-fil-A", "Ralphs");
+  path = m.CalculateShortestPath_Bellman_Ford("DASH", "Chipotle");
   std::reverse(gt.begin(),gt.end()); // Reverse the path
 
   // Print the path lengths
+  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
+  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  EXPECT_EQ(path, gt);
+}
+
+TEST(TrojanMapTest, CalculateShortestPath_SameNode) {
+  TrojanMap m;
+
+  auto path = m.CalculateShortestPath_Dijkstra("Target", "Target");
+  std::vector<std::string> gt{};
+  EXPECT_EQ(path, gt);
+}
+
+//Phase2
+TEST(TrojanMapTest, CalculateShortestPath_Dijkstra2) {
+  TrojanMap m;
+  
+  // Test from Trojan Grounds (Starbucks) to Ralphs
+  auto path = m.CalculateShortestPath_Dijkstra("Dulce", "The Barber Shop");
+  std::vector<std::string> gt{
+      "5567718696","6814820015","6814820010","6814820018","6814769290","9591449485","6396649383",
+      "6814769289","6813379584","6813379479","3398578901","6813379425","4399698015","3398578900",
+      "4399698005","6813379519","6813379505","6813379398","3398578898","6813565290","3398574892",
+      "3398578893","2613117879","6813379406","6807905595","6787803635","2613117867","6813565334",
+      "4835551105","2613117915","2613117890","3403034590","2613117862","4835551093","3403034586",
+      "2613117900","4835551084","7863689395","7863689394","3403035500","3403035499","7693467754",
+      "5680945525","5556118325","6816193705","3403035498","6813565323","3398621871","6813565325",
+      "5680944619","5680944620","6816959869","6816959863","122454252","1832234144","6816193810",
+      "1832234142","4258846991","1832234141","8501336167","6817111153","4011837239","123161907",
+      "6787830192","6787830199","123241958","123241955","7362236521","123241952","7362236512",
+      "4012864457","7863404947","21098545","7225140904","8501336165","4019981462","7225140900",
+      "7227363544","4019974803","6816950645","123241947","123241944","122420459","4020001608",
+      "7642589440","60957897","4020023719","123241939","4020023720","3846520096","5567738306"}; // Expected path
+  // Print the path lengths
+  std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
+  std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  EXPECT_EQ(path, gt);
+  
+  path = m.CalculateShortestPath_Dijkstra("The Barber Shop", "Dulce");
+  std::reverse(gt.begin(),gt.end()); // Reverse the path
+
+
   std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);

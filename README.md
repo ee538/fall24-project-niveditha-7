@@ -381,8 +381,8 @@ Please report and compare the time spent by these algorithms.
 |George Lucas Instructional Building to Arco                     | 94            |  7273     |      |
 |Trojan Grounds (Starbucks) to  Ralphs                     |  75           |7141       |      |
 |Chipotle to DASH                      |58             |7181       |      |
-|Hope Manor to The Pearl               58      |  12639           |       |      |
-|Dulce to the Barber Shop                     | 173           |  7643     |      |
+|Hope Manor to The Pearl      |  58           | 12639      |      |
+|Dulce to the Barber Shop                     | 103           |  5682     |      |
 |Vermont & Exposition 1  to Distributing Station 31|   116         | 8302      |      |
 |Stimson House to Hoover & 28th |  63           |  8426     |      |
 |Felix Chevrolet to Pico & Grand|  156           |  9728     |      |
