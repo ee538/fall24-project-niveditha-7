@@ -480,6 +480,78 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
   return path;
 }
 
+
+// //non-optimised bellman ford
+// std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
+//     std::string location1_name, std::string location2_name) {
+//   std::vector<std::string> path;
+
+//   // Get the IDs for the start and end locations
+//   std::string start_location = GetID(location1_name);
+//   std::string end_location = GetID(location2_name);
+
+//   // Check if start or end location exists in the map
+//   if (data.find(start_location) == data.end() || data.find(end_location) == data.end()) {
+//     return {};  // Return an empty path if either location is missing
+//   }
+
+//   // Initialize distances to infinity and set the start node's distance to 0
+//   std::unordered_map<std::string, double> short_distance_from_start;
+//   std::unordered_map<std::string, std::string> prev_distance;
+
+//   for (auto &node : data) {
+//     short_distance_from_start[node.first] = INT_MAX;
+//   }
+//   short_distance_from_start[start_location] = 0;
+
+//   int V = data.size();
+
+//   // Perform exactly V-1 iterations of relaxation
+//   for (int i = 0; i < V - 1; i++) {
+//     // For each node, check all its neighbors
+//     for (auto &node : data) {
+//       std::string u = node.first;
+
+//       if (short_distance_from_start[u] == INT_MAX) continue; // Skip unreachable nodes
+
+//       for (auto &v : GetNeighborIDs(u)) {
+//         double weight = CalculateDistance(u, v);
+
+//         // Relax the edge (u, v)
+//         if (short_distance_from_start[u] + weight < short_distance_from_start[v]) {
+//           short_distance_from_start[v] = short_distance_from_start[u] + weight;
+//           prev_distance[v] = u;
+//         }
+//       }
+//     }
+//   }
+
+//   // If end_location is still at infinity, no path was found
+//   if (short_distance_from_start[end_location] == INT_MAX) {
+//     return {};  // No path exists
+//   }
+
+//   // Reconstruct the path from end_location to start_location
+//   for (std::string at = end_location; at != ""; at = prev_distance[at]) {
+//     path.push_back(at);
+//     if (at == start_location) break;
+//   }
+
+//   // Reverse to get the path from start to end
+//   std::reverse(path.begin(), path.end());
+
+//   // Verify that the path starts with start_location
+//   if (path.empty() || path[0] != start_location) {
+//     return {};  // Return empty if no valid path exists
+//   }
+
+//   return path;
+// }
+
+
+
+
+
 /**
  * Traveling salesman problem: Given a list of locations, return the shortest
  * path which visit all the places and back to the start point.

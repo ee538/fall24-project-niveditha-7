@@ -254,16 +254,47 @@ TEST(TrojanMapTest, GetLocationRegex1) {
   EXPECT_EQ(expected_set, actual_set);
 }
 
-//Test TopologicalSort
-TEST(TrojanMapStudentTest, TopologicalSort_2) {
+
+
+// Test topological sort function for DeliveringTrojan
+TEST(TrojanMapTest, TopologicalSortTest) {
   TrojanMap m;
-  
-  std::vector<std::string> location_names = {"Cava", "Ralphs"};
-  std::vector<std::vector<std::string>> dependencies ={{"Cava","Ralphs"}};
+
+  // Test case 1
+  std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  std::vector<std::vector<std::string>> dependencies = {
+      {"Ralphs", "KFC"},
+      {"Ralphs", "Chick-fil-A"},
+      {"KFC", "Chick-fil-A"}
+  };
   auto result = m.DeliveringTrojan(location_names, dependencies);
-  std::vector<std::string> gt ={};
+  std::vector<std::string> gt = {"Ralphs", "KFC", "Chick-fil-A"};
+  EXPECT_EQ(result, gt);
+
+  // Test case 2
+  location_names = {"Starbucks", "Exposition Park", "Target", "Food 4 Less"};
+  dependencies = {
+      {"Starbucks", "Exposition Park"},
+      {"Exposition Park", "Target"},
+      {"Target", "Food 4 Less"}
+  };
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Starbucks", "Exposition Park", "Target", "Food 4 Less"};
+  EXPECT_EQ(result, gt);
+
+  // Test case 3
+  location_names = {"Department of Motor Vehicles", "Chick-fil-A", "Ralphs"};
+  dependencies = {
+      {"Department of Motor Vehicles", "Chick-fil-A"},
+      {"Ralphs", "Chick-fil-A"}
+  };
+  result = m.DeliveringTrojan(location_names, dependencies);
+  gt = {"Ralphs", "Department of Motor Vehicles", "Chick-fil-A"};
   EXPECT_EQ(result, gt);
 }
+
+
+
 // Test cycle detection function
 TEST(TrojanMapTest, TopologicalSort) {
   TrojanMap m;
@@ -274,19 +305,20 @@ TEST(TrojanMapTest, TopologicalSort) {
   std::vector<std::string> gt ={"Ralphs", "KFC","Chick-fil-A"};
   EXPECT_EQ(result, gt);
 }
+
 // Test cycle detection function
 TEST(TrojanMapTest, CycleDetection) {
   TrojanMap m;
   
   // Test case 1
-  std::vector<double> square1 = {-118.299, -118.264, 34.032, 34.011};
+  std::vector<double> square1 = {-118.299, -118.299, 34.032, 34.011}; //not a square test
   auto sub1 = m.GetSubgraph(square1);
   bool result1 = m.CycleDetection(sub1, square1);
-  EXPECT_EQ(result1, true);
+  EXPECT_EQ(result1, false);
 
   // Test case 2
-  std::vector<double> square2 = {-118.290, -118.289, 34.030, 34.020};
+  std::vector<double> square2 = {-118.290, -118.275, 34.032, 34.011};
   auto sub2 = m.GetSubgraph(square2);
   bool result2 = m.CycleDetection(sub2, square2);
-  EXPECT_EQ(result2, false);
+  EXPECT_EQ(result2, true);
 }
