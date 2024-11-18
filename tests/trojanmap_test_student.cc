@@ -264,3 +264,29 @@ TEST(TrojanMapStudentTest, TopologicalSort_2) {
   std::vector<std::string> gt ={};
   EXPECT_EQ(result, gt);
 }
+// Test cycle detection function
+TEST(TrojanMapTest, TopologicalSort) {
+  TrojanMap m;
+  
+  std::vector<std::string> location_names = {"Ralphs", "Chick-fil-A", "KFC"};
+  std::vector<std::vector<std::string>> dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"KFC","Chick-fil-A"}};
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt ={"Ralphs", "KFC","Chick-fil-A"};
+  EXPECT_EQ(result, gt);
+}
+// Test cycle detection function
+TEST(TrojanMapTest, CycleDetection) {
+  TrojanMap m;
+  
+  // Test case 1
+  std::vector<double> square1 = {-118.299, -118.264, 34.032, 34.011};
+  auto sub1 = m.GetSubgraph(square1);
+  bool result1 = m.CycleDetection(sub1, square1);
+  EXPECT_EQ(result1, true);
+
+  // Test case 2
+  std::vector<double> square2 = {-118.290, -118.289, 34.030, 34.020};
+  auto sub2 = m.GetSubgraph(square2);
+  bool result2 = m.CycleDetection(sub2, square2);
+  EXPECT_EQ(result2, false);
+}

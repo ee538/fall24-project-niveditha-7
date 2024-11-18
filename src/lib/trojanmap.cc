@@ -607,6 +607,13 @@ std::vector<std::string> TrojanMap::DeliveringTrojan(
  * @return {bool}                      : in square or not
  */
 bool TrojanMap::inSquare(std::string id, std::vector<double> &square) {
+  if (data.find(id) == data.end()) return false;
+  double lon = GetLon(id); // Get longitude
+  double lat = GetLat(id); // Get latitude
+
+  // Checking if the point is within the square bounds
+  return (lon >= square[0] && lon <= square[1] && lat <= square[2] && lat >= square[3]);
+  return true;
   return true;
 }
 
@@ -623,7 +630,32 @@ bool TrojanMap::inSquare(std::string id, std::vector<double> &square) {
 std::vector<std::string> TrojanMap::GetSubgraph(std::vector<double> &square) {
   // include all the nodes in subgraph
   std::vector<std::string> subgraph;
+  // Iterating over all nodes in the g raph
+  for (const auto &node : data) {
+    if (inSquare(node.first, square)) {
+      subgraph.push_back(node.first); // Add nodes within the square to the subgraph
+    }
+  }
+
+
   return subgraph;
+}
+bool DFS_CycleDetection(const std::string &node, const std::string &parent,
+                        std::unordered_map<std::string, bool> &visited,
+                        std::unordered_map<std::string, std::vector<std::string>> &subgraph_map) {
+  visited[node] = true;
+
+  for (const auto &neighbor : subgraph_map[node]) {
+    if (!visited[neighbor]) {
+      if (DFS_CycleDetection(neighbor, node, visited, subgraph_map)) {
+        return true; // Cycle detected in a recursive call
+      }
+    } else if (neighbor != parent) {
+      return true; // when Back edge found (cycle detected)
+    }
+  }
+
+  return false; // No cycle is detected
 }
 
 /**
@@ -636,6 +668,33 @@ std::vector<std::string> TrojanMap::GetSubgraph(std::vector<double> &square) {
  * @return {bool}: whether there is a cycle or not
  */
 bool TrojanMap::CycleDetection(std::vector<std::string> &subgraph, std::vector<double> &square) {
+  // Create an adjacency list for the subgraph
+  std::unordered_map<std::string, std::vector<std::string>> subgraph_map;
+
+  for (const auto &node : subgraph) {
+    for (const auto &neighbor : GetNeighborIDs(node)) {
+      if (inSquare(neighbor, square)) {
+        subgraph_map[node].push_back(neighbor); // Adding the  edge only if neighbor is in the square
+      }
+    }
+  }
+
+  // Initialize visited map
+  std::unordered_map<std::string, bool> visited;
+
+  for (const auto &node : subgraph) {
+    visited[node] = false; // Set all nodes as unvisited
+  }
+
+  // Perform DFS for cycle detection
+  for (const auto &node : subgraph) {
+    if (!visited[node]) {
+      if (DFS_CycleDetection(node, "", visited, subgraph_map)) {
+        return true; // Cycle detected
+      }
+    }
+  }
+
   return false;
 }
 
