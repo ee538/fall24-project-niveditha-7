@@ -189,3 +189,78 @@ TEST(TrojanMapTest, CalculateShortestPath_Dijkstra2) {
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
   EXPECT_EQ(path, gt);
 }
+
+// PHASE II
+// Test CalculateEditDistance function
+TEST(TrojanMapTest, CalculateEditDistance) {
+  TrojanMap m;
+  EXPECT_EQ(m.CalculateEditDistance("USC", "UCLA"), 3);
+  EXPECT_EQ(m.CalculateEditDistance("kitten", "sitten"), 1);
+  EXPECT_EQ(m.CalculateEditDistance("lol", "LOL"), 0);
+}
+
+// Test get all categories
+TEST(TrojanMapTest, GetAllCategories) {
+  TrojanMap m;
+  
+  auto output = m.GetAllCategories();
+  std::set<std::string> expected = {
+    "artwork", "attraction", "bakery", "bank", "bar", "beauty", "beverages", "bicycle", "bicycle_rental",
+    "bus_station", "cafe", "car", "car_repair", "car_wash", "charging_station", "childcare", "clinic",
+    "clothes", "confectionery", "convenience", "copyshop", "dentist", "department_store", "driving_school",
+    "fabric", "fast_food", "food_court", "fountain", "fuel", "gallery", "hairdresser", "hospital", "hotel",
+    "library", "marketplace", "mobile_phone", "museum", "music", "optician", "parcel_locker", "parking",
+    "parking_entrance", "pharmacy", "place_of_worship", "police", "post_box", "post_office", "restaurant",
+    "school", "shoe_repair", "shoes", "skate", "social_facility", "supermarket", "theatre", "tobacco",
+    "yoga", "yes"
+  };
+  std::set<std::string> output_set(output.begin(), output.end());
+  EXPECT_EQ(output_set, expected);
+}
+
+//Test GetAllLocationsFRom Category
+TEST(TrojanMapTest, GetAllLocationsFromCategory) {
+  TrojanMap m;
+  
+  auto output = m.GetAllLocationsFromCategory("museum");
+  std::set<std::string> expected = {"4399693647"};
+  std::set<std::string> output_set(output.begin(), output.end());
+  EXPECT_EQ(output_set, expected);
+}
+
+TEST(TrojanMapTest, GetAllLocationsFromCategory1) {
+  TrojanMap m;
+  
+  auto output = m.GetAllLocationsFromCategory("music");
+  std::set<std::string> expected = {"5695174693", "5695183055"};
+  std::set<std::string> output_set(output.begin(), output.end());
+  EXPECT_EQ(output_set, expected);
+}
+
+//Test GetLocation Regex
+TEST(TrojanMapTest, GetLocationRegex) {
+  TrojanMap m;
+  std::set<std::string> expected_set;
+  auto actual = m.GetLocationRegex(std::regex("dummy"));
+  std::set<std::string> actual_set(actual.begin(), actual.end());
+  EXPECT_EQ(actual_set, expected_set);
+}
+
+TEST(TrojanMapTest, GetLocationRegex1) {
+  TrojanMap m;
+  std::set<std::string> expected_set = { "4927493958" };
+  auto actual = m.GetLocationRegex(std::regex("Five Guys"));
+  std::set<std::string> actual_set(actual.begin(), actual.end());
+  EXPECT_EQ(expected_set, actual_set);
+}
+
+//Test TopologicalSort
+TEST(TrojanMapStudentTest, TopologicalSort_2) {
+  TrojanMap m;
+  
+  std::vector<std::string> location_names = {"Cava", "Ralphs"};
+  std::vector<std::vector<std::string>> dependencies ={{"Cava","Ralphs"}};
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt ={};
+  EXPECT_EQ(result, gt);
+}

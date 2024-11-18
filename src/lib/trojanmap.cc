@@ -118,7 +118,44 @@ std::string id = GetID(name);
  * @return {int}                    : edit distance between two strings
  */
 int TrojanMap::CalculateEditDistance(std::string a, std::string b) {     
-  return 0;
+    // strings to lowercase for comparison
+    std::transform(a.begin(), a.end(), a.begin(), ::tolower);
+    std::transform(b.begin(), b.end(), b.begin(), ::tolower);
+    // If strings are equal, the distance is zero
+    if (a == b) {
+        return 0;  
+    }
+    // dimensions of DP matrix
+    int m = a.size();  // # of rows 
+    int n = b.size();  // # of columns
+    // DP matrix, default value set to 0
+    std::vector<std::vector<int>> dp(m + 1, std::vector<int>(n + 1, 0));
+    // Populating first row
+    for (int col = 0; col <= n; ++col) {
+        dp[0][col] = col;
+    }
+    // Populating first column
+    for (int row = 1; row <= m; ++row) {
+        dp[row][0] = row;
+    }
+    // populating the matrix
+    for (int i = 1; i <= m; ++i) {
+        for (int j = 1; j <= n; ++j) {
+            if (a[i - 1] == b[j - 1]) {
+                // Characters match: no cost
+                dp[i][j] = dp[i - 1][j - 1];
+            } else {
+                // Characters do not match: cost
+                int insert_cost = dp[i][j - 1];    // Cost of inserting 
+                int delete_cost = dp[i - 1][j];    // Cost of deleting 
+                int replace_cost = dp[i - 1][j - 1];  // Cost of replacing
+                dp[i][j] = 1 + std::min({insert_cost, delete_cost, replace_cost});
+            }
+        }
+    }
+
+    // return the edit distance
+    return dp[m][n];
 }
 
 /**
@@ -171,7 +208,19 @@ std::vector<std::string> TrojanMap::Autocomplete(std::string name) {
  * @return {std::vector<std::string>}  : all unique location categories
  */
 std::vector<std::string> TrojanMap::GetAllCategories() {
-  return {};
+  //creating a set to store unique categories
+  std::set<std::string>uniqueCategories;
+  //iterating all data in map
+  for (const auto& entry : data){
+    const auto& attributes =entry.second.attributes;
+    //adding attributes to the set
+    for (const auto& category: attributes){
+      uniqueCategories.insert(category);
+    }
+  }
+  //set to vector
+  std::vector<std::string>result (uniqueCategories.begin(), uniqueCategories.end());
+  return result;
 }
 
 /**
@@ -184,7 +233,16 @@ std::vector<std::string> TrojanMap::GetAllCategories() {
  */
 std::vector<std::string> TrojanMap::GetAllLocationsFromCategory(
     std::string category) {
+  // initializing the vector    
   std::vector<std::string> res;
+  // to lower case for case sensivity
+  std::transform(category.begin(),category.end(), category.begin(), ::tolower);
+  // iterating the map
+  for (const auto&[location,node]: data){
+    if (node.attributes.count(category)>0){
+      res.push_back(location);
+    }
+  }
   return res;
 }
 
@@ -198,7 +256,17 @@ std::vector<std::string> TrojanMap::GetAllLocationsFromCategory(
  * @return {std::vector<std::string>}     : ids
  */
 std::vector<std::string> TrojanMap::GetLocationRegex(std::regex location) {
-  return {};
+  // initializing an empty vector
+  std::vector<std::string> results;
+
+  // iterating all entries in map
+  for (auto & it:data){
+    // ig name matches the regex, the location is added to vector
+    if (std::regex_match(it.second.name,location)){
+      results.push_back(it.first);
+    }
+  }
+  return results;
 }
 
 /**
