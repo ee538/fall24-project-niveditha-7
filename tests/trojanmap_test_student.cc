@@ -322,3 +322,46 @@ TEST(TrojanMapTest, CycleDetection) {
   bool result2 = m.CycleDetection(sub2, square2);
   EXPECT_EQ(result2, true);
 }
+//Test TopologicalSort
+// Test cycle detection function with 5 nodes
+TEST(TrojanMapTest, TopologicalSort5) {
+  TrojanMap m;
+
+  // Define locations and dependencies
+  std::vector<std::string> location_names = {"CAVA", "Tommy Trojan", "USC Fisher Museum of Art", "Haagen Dazs Direct", "Hollywood Wraps"};
+  std::vector<std::vector<std::string>> dependencies = {
+      {"CAVA", "USC Fisher Museum of Art"},  // Must visit CAVA before USC Fisher Museum of Art
+      {"CAVA", "Haagen Dazs Direct"},  // Must visit CAVA before Haagen Dazs Direct
+      {"Tommy Trojan", "Hollywood Wraps"},  // Must visit Tommy Trojan before Hollywood Wraps
+      {"USC Fisher Museum of Art", "Hollywood Wraps"},        // Must visit USC Fisher Museum of Art before Hollywood Wraps
+      {"Haagen Dazs Direct", "Hollywood Wraps"}         // Must visit Haagen Dazs Direct before Hollywood Wraps
+  };
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  std::vector<std::string> gt = {"Tommy Trojan", "CAVA", "USC Fisher Museum of Art", "Haagen Dazs Direct", "Hollywood Wraps"};
+  EXPECT_EQ(result, gt);
+}
+
+// Test cycle detection function with 8 nodes
+TEST(TrojanMapTest, TopologicalSortWithEightNodes) {
+  TrojanMap m;
+  std::vector<std::string> location_names = {
+      "CAVA", "Tommy Trojan", "USC Fisher Museum of Art", 
+      "Haagen Dazs Direct", "Hollywood Wraps", "Holy Green", "Workshop Salon & Boutique", "Chase"
+  };
+  std::vector<std::vector<std::string>> dependencies = {
+      {"CAVA", "Haagen Dazs Direct"},  // Must visit CAVA before Haagen Dazs Direct
+      {"Tommy Trojan", "Hollywood Wraps"},  // Must visit Tommy Trojan before Hollywood Wraps
+      {"USC Fisher Museum of Art", "Holy Green"},  // Must visit USC Fisher Museum of Art before Home3
+      {"Haagen Dazs Direct", "Chase"},         // Must visit Haagen Dazs Direct before Chase
+      {"Hollywood Wraps", "Workshop Salon & Boutique"},        // Must visit Hollywood Wraps before Workshop Salon & Boutique
+      {"Holy Green", "Chase"},         // Must visit Holy Green before Chase
+      {"Workshop Salon & Boutique", "Chase"}          // Must visit Workshop Salon & Boutique before Chase
+  };
+  auto result = m.DeliveringTrojan(location_names, dependencies);
+  // Define the expected result
+  std::vector<std::string> gt = {
+      "USC Fisher Museum of Art", "Tommy Trojan", "CAVA", "Holy Green", 
+      "Hollywood Wraps", "Haagen Dazs Direct", "Workshop Salon & Boutique", 
+      "Chase"  };
+  EXPECT_EQ(result, gt);
+}
