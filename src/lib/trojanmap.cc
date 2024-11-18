@@ -595,8 +595,36 @@ std::vector<std::vector<std::string>> TrojanMap::ReadDependenciesFromCSVFile(
 std::vector<std::string> TrojanMap::DeliveringTrojan(
     std::vector<std::string> &locations,
     std::vector<std::vector<std::string>> &dependencies) {
+  std::unordered_map<std::string, int> in_degrees;
+  std::unordered_map<std::string, std::vector<std::string>> graph;
+
+  // Building graph and degree
+  for (const auto &location : locations) {
+    in_degrees[location] = 0;
+    graph[location] = {};
+  }
+  for (const auto &dependency : dependencies) {
+    graph[dependency[0]].push_back(dependency[1]);
+    in_degrees[dependency[1]]++;
+  }
+  // nodes with no dependencies
+  std::queue<std::string> q;
+  for (const auto &[node, degree] : in_degrees) {
+    if (degree == 0) q.push(node);
+  }
+  
+  // Topological Sort
   std::vector<std::string> result;
-  return result;     
+  while (!q.empty()) {
+    auto node = q.front();
+    q.pop();
+    result.push_back(node);
+    for (const auto &neighbor : graph[node]) {
+      if (--in_degrees[neighbor] == 0) q.push(neighbor);
+    }
+  }
+  // all nodes  sorted ??
+  return (result.size() == locations.size()) ? result : std::vector<std::string>{};
 }
 
 /**
