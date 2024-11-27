@@ -173,6 +173,7 @@ void Unite(std::unordered_map<std::string, std::string>& parent, const std::stri
   // Takes in a vector of queries. Each query consists of a pair: <tank_capacity, [source, destination]>.
   // Returns the result of each query in a vector.
   std::vector<bool> Queries(const std::vector<std::pair<double, std::vector<std::string>>> &q);
+  void InteractivePathQuery();
 
   //----------------------------------------------------- User-defined functions
 };

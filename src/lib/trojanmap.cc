@@ -888,6 +888,57 @@ std::vector<bool> TrojanMap::Queries(const std::vector<std::pair<double, std::ve
     return ans;
 }
 
+void TrojanMap::InteractivePathQuery() {
+    std::vector<std::pair<double, std::vector<std::string>>> queries;
+
+    while (true) {
+        std::string start_location, destination;
+        double gas_tank;
+
+        //  start location
+        std::cout << "Please input the start location: ";
+        std::getline(std::cin, start_location);
+
+        //  destination
+        std::cout << "Please input the destination: ";
+        std::getline(std::cin, destination);
+
+        // input gas tank size
+        std::cout << "Please input the volume of the gas tank: ";
+        std::cin >> gas_tank;
+        std::cin.ignore(); 
+
+        // save the query
+        queries.push_back({gas_tank, {start_location, destination}});
+
+        // more queries are needed??
+        std::cout << "More Query? (y/n): ";
+        char more_query;
+        std::cin >> more_query;
+        std::cin.ignore(); 
+
+        if (more_query == 'n' || more_query == 'N') {
+            break;
+        }
+    }
+
+    // process the queries
+    std::vector<bool> results = Queries(queries);
+
+    // output
+    std::cout << "***Results****" << std::endl;
+    for (size_t i = 0; i < queries.size(); ++i) {
+        const auto &query = queries[i];
+        const std::string &start_location = query.second[0];
+        const std::string &destination = query.second[1];
+        double gas_tank = query.first;
+
+        std::cout << "From " << start_location << " to " << destination
+                  << " with " << gas_tank << " gallons of gas tank: "
+                  << (results[i] ? "Yes" : "No") << std::endl;
+    }
+}
+
 /**
  * CreateGraphFromCSVFile: Read the map data from the csv file
  * We have provided the code for you. Please do not need to change this function.
