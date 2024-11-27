@@ -17,6 +17,7 @@ cc_test(
         "//src/lib:TrojanMap",
         "@googletest//:gtest_main",
     ],
+    copts = ["-std=c++17"],
     timeout="long",
 )
 
@@ -27,6 +28,7 @@ cc_test(
         "//src/lib:TrojanMap",
         "@googletest//:gtest_main",
     ],
+    copts = ["-std=c++17"],
     timeout="long",
 )
 
@@ -37,4 +39,5 @@ cc_test(
         "//src/lib:TrojanMap",
         "@googletest//:gtest_main",
     ],
+    copts = ["-std=c++17"],
 )

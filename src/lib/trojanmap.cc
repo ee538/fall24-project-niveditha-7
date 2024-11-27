@@ -814,6 +814,11 @@ std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::
   return res;
 }
 
+
+
+
+
+
 /**
  * Shortest Path to Visit All Nodes: Given a list of locations, return the shortest
  * path which visit all the places and no need to go back to the start point.
@@ -824,6 +829,10 @@ std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::
 std::vector<std::string> TrojanMap::TrojanPath(
       std::vector<std::string> &location_names) {
     std::vector<std::string> res;
+
+
+
+
     return res;
 }
 
@@ -835,6 +844,47 @@ std::vector<std::string> TrojanMap::TrojanPath(
  */
 std::vector<bool> TrojanMap::Queries(const std::vector<std::pair<double, std::vector<std::string>>>& q) {
     std::vector<bool> ans(q.size());
+
+    // processing each query independently
+    for (size_t i = 0; i < q.size(); ++i) {
+        double gas_tank = q[i].first;
+        const auto &locations = q[i].second;
+
+        if (locations.size() != 2) {
+            ans[i] = false; // invalid format
+            continue;
+        }
+
+        std::string start_id = GetID(locations[0]);
+        std::string end_id = GetID(locations[1]);
+
+        if (start_id.empty() || end_id.empty()) {
+            ans[i] = false; // 1/2 locations do not exist
+            continue;
+        }
+
+        // union-Find structure based on the gas tank size
+        std::unordered_map<std::string, std::string> parent;
+        for (const auto &node : data) {
+            parent[node.first] = node.first; // initializing each node as its own parent
+        }
+
+        for (const auto &node : data) {
+            const auto &neighbors = GetNeighborIDs(node.first);
+            for (const auto &neighbor : neighbors) {
+                double distance = CalculateDistance(node.first, neighbor);
+
+                // union  nodes if the distance is <= gas tank size
+                if (distance <= gas_tank) {
+                    Unite(parent, node.first, neighbor);
+                }
+            }
+        }
+
+        // verifying if start/end nodes are in the same connected component
+        ans[i] = (Find(parent, start_id) == Find(parent, end_id));
+    }
+
     return ans;
 }
 

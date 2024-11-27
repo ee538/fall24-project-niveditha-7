@@ -6,6 +6,7 @@ cc_library(
     hdrs = ["trojanmap.h"],
     data = ["data.csv"],
     visibility = ["//visibility:public"],
+    copts = ["-std=c++17"],
 )
 
 cc_library(
@@ -17,6 +18,7 @@ cc_library(
     "map.png", 
     "output0.avi","output0_2opt.avi","output0_backtracking.avi"],
     visibility = ["//visibility:public"],
+    copts = ["-std=c++17"],
 )
 
 cc_library(
@@ -25,4 +27,5 @@ cc_library(
     hdrs = glob(["ui.h"]),
     deps = ["@ncurses//:main"],
     visibility = ["//visibility:public"],
+    copts = ["-std=c++17"],
 )

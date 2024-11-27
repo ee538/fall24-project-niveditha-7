@@ -152,7 +152,24 @@ class TrojanMap {
 
   // Given a location id and k, find the k closest points on the map
   std::vector<std::string> FindNearby(std::string, std::string, double, int);
-  
+
+// implemented to run Queries Fucntion with out using lambda  
+std::string Find(std::unordered_map<std::string, std::string>& parent, const std::string& x) {
+    if (parent[x] != x) {
+        parent[x] = Find(parent, parent[x]); // compression
+    }
+    return parent[x];
+}
+
+// implemented to run Queries Fucntion with out using lambda  
+void Unite(std::unordered_map<std::string, std::string>& parent, const std::string& x, const std::string& y) {
+    std::string rootX = Find(parent, x);
+    std::string rootY = Find(parent, y);
+    if (rootX != rootY) {
+        parent[rootY] = rootX; // Union
+    }
+}
+
   // Takes in a vector of queries. Each query consists of a pair: <tank_capacity, [source, destination]>.
   // Returns the result of each query in a vector.
   std::vector<bool> Queries(const std::vector<std::pair<double, std::vector<std::string>>> &q);

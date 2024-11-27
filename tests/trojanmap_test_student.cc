@@ -365,3 +365,36 @@ TEST(TrojanMapTest, TopologicalSortWithEightNodes) {
       "Chase"  };
   EXPECT_EQ(result, gt);
 }
+
+TEST(TrojanMapTest, Queries) {
+  TrojanMap m;
+  std::vector<std::pair<double, std::vector<std::string>>> input {{555, {"Tommy Trojan", "GTA VI"}},
+                                                                  {10, {"CAVA", "Target"}},
+                                                                  {0.02, {"Hollywood Wraps", "Target"}},
+                                                                  {999, {"dummy", "dummy"}}};
+  auto actual = m.Queries(input);
+  std::vector<bool> expected {false, true, false, false};
+  EXPECT_EQ(expected, actual);
+}
+
+TEST(TrojanMapTest, Queries2) {
+  TrojanMap m;
+  std::vector<std::pair<double, std::vector<std::string>>> input {
+                                                                  
+                                                                  {11, {" ", "Target"}},
+                                                                  {999, {"CAVA", "Mercy please"}}};
+  auto actual = m.Queries(input);
+  std::vector<bool> expected {false, false};
+  EXPECT_EQ(expected, actual);
+}
+
+TEST(TrojanMapTest, Queries3) {
+  TrojanMap m;
+  std::vector<std::pair<double, std::vector<std::string>>> input {
+                                                                  
+                                                                  {11, {" CAVA", " "}},
+                                                                  {0.0001, {"CAVA", "Trojan Grounds (Starbucks)"}}};
+  auto actual = m.Queries(input);
+  std::vector<bool> expected {false, false};
+  EXPECT_EQ(expected, actual);
+}
