@@ -814,8 +814,47 @@ std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::
   return res;
 }
 
+// implementation of backtracking function
+void TrojanMap::Backtracking(std::vector<std::string> &current_path,
+                             std::set<std::string> &visited,
+                             const std::vector<std::string> &location_ids,
+                             std::vector<std::string> &shortest_path,
+                             double &shortest_distance,
+                             const std::string &prev_id) {
+    // case all locations been visited
+    if (visited.size() == location_ids.size()) {
+        double current_distance = 0.0;
 
+        // distance of current path
+        for (size_t i = 0; i < current_path.size() - 1; ++i) {
+            current_distance += CalculatePathLength(
+                CalculateShortestPath_Dijkstra(current_path[i], current_path[i + 1]));
+        }
 
+        // updating shortest path if current path is shorter
+        if (current_distance < shortest_distance) {
+            shortest_distance = current_distance;
+            shortest_path = current_path;
+        }
+        return;
+    }
+
+    // recursive case to try unvisited locations
+    for (const auto &location_id : location_ids) {
+        if (visited.find(location_id) == visited.end()) {
+            // marks the location as visited, then adds it to the path
+            visited.insert(location_id);
+            current_path.push_back(location_id);
+
+            // backtracking
+            Backtracking(current_path, visited, location_ids, shortest_path, shortest_distance, location_id);
+
+            // unmarks the location and removes it from path
+            visited.erase(location_id);
+            current_path.pop_back();
+        }
+    }
+}
 
 
 
@@ -831,7 +870,31 @@ std::vector<std::string> TrojanMap::TrojanPath(
     std::vector<std::string> res;
 
 
+    if (location_names.empty()) return res;
 
+    // converting each location name to ID
+    std::vector<std::string> location_ids;
+    for (const auto &name : location_names) {
+        std::string id = GetID(name);
+        if (!id.empty()) {
+            location_ids.push_back(id);
+        } else {
+            std::cerr << "Error: Location '" << name << "' not found in the map!" << std::endl;
+        }
+    }
+    // case empty
+    if (location_ids.empty()) return res;
+
+    // initializing variables for backtracking
+    std::vector<std::string> current_path;
+    std::vector<std::string> shortest_path;
+    std::set<std::string> visited;
+    double shortest_distance = std::numeric_limits<double>::max();
+
+    // calling backtracking function
+    Backtracking(current_path, visited, location_ids, shortest_path, shortest_distance, "");
+
+    res= shortest_path;
 
     return res;
 }
@@ -863,7 +926,7 @@ std::vector<bool> TrojanMap::Queries(const std::vector<std::pair<double, std::ve
             continue;
         }
 
-        // union-Find structure based on the gas tank size
+        // union-find structure based on the gas tank size
         std::unordered_map<std::string, std::string> parent;
         for (const auto &node : data) {
             parent[node.first] = node.first; // initializing each node as its own parent

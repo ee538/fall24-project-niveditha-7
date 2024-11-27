@@ -366,6 +366,7 @@ TEST(TrojanMapTest, TopologicalSortWithEightNodes) {
   EXPECT_EQ(result, gt);
 }
 
+// Test 1 for Queries Function
 TEST(TrojanMapTest, Queries) {
   TrojanMap m;
   std::vector<std::pair<double, std::vector<std::string>>> input {{555, {"Tommy Trojan", "GTA VI"}},
@@ -376,7 +377,7 @@ TEST(TrojanMapTest, Queries) {
   std::vector<bool> expected {false, true, false, false};
   EXPECT_EQ(expected, actual);
 }
-
+// Test II for Queries Function
 TEST(TrojanMapTest, Queries2) {
   TrojanMap m;
   std::vector<std::pair<double, std::vector<std::string>>> input {
@@ -388,6 +389,7 @@ TEST(TrojanMapTest, Queries2) {
   EXPECT_EQ(expected, actual);
 }
 
+// Test III for Queries Function
 TEST(TrojanMapTest, Queries3) {
   TrojanMap m;
   std::vector<std::pair<double, std::vector<std::string>>> input {
@@ -397,4 +399,51 @@ TEST(TrojanMapTest, Queries3) {
   auto actual = m.Queries(input);
   std::vector<bool> expected {false, false};
   EXPECT_EQ(expected, actual);
+}
+
+
+// TrojanPath Tests
+// performing 3 tests on one function
+TEST(TrojanMapTest, TrojanPathTests123) {
+    TrojanMap m;
+
+    // test I-> Which Wich?-> New Orleans Fish Market -> Chick-fil-A
+    std::vector<std::string> input = {"Which Wich?", "New Orleans Fish Market", "Chick-fil-A"};
+    auto path = m.TrojanPath(input);
+    std::vector<std::string> gt{"4577908517", "4630604681", "4547476733"};
+    EXPECT_EQ(path, gt);
+
+    double calculated_distance = m.CalculatePathLength(path);
+    double expected_distance = m.CalculatePathLength(gt);
+    std::cout << "Test Case 1: Which Wich? -> New Orleans Fish Market -> Chick-fil-A" << std::endl;
+    std::cout << "Calculated Path Length: " << calculated_distance << " miles" << std::endl;
+    std::cout << "Expected Path Length: " << expected_distance << " miles" << std::endl;
+    EXPECT_NEAR(calculated_distance, expected_distance, 0.001);
+  
+
+    // test II New Orleans Fish Market  -> Chick-fil-A -> Which Wich?
+    input = {"New Orleans Fish Market", "Chick-fil-A", "Which Wich?"};
+    path = m.TrojanPath(input);
+    gt = {"4630604681", "4547476733", "4577908517"};
+    EXPECT_EQ(path, gt);
+
+    calculated_distance = m.CalculatePathLength(path);
+    expected_distance = m.CalculatePathLength(gt);
+    std::cout << "Test Case 2: New Orleans Fish Market  -> Chick-fil-A -> Which Wich?" << std::endl;
+    std::cout << "Calculated Path Length: " << calculated_distance << " miles" << std::endl;
+    std::cout << "Expected Path Length: " << expected_distance << " miles" << std::endl;
+    EXPECT_NEAR(calculated_distance, expected_distance, 0.001);
+
+    // test III --> New Orleans Fish Market -> Which Wich? -> Chick-fil-A
+    input = {"New Orleans Fish Market", "Which Wich?", "Chick-fil-A"};
+    path = m.TrojanPath(input);
+    gt = {"4630604681", "4577908517", "4547476733"};
+    EXPECT_EQ(path, gt);
+
+    calculated_distance = m.CalculatePathLength(path);
+    expected_distance = m.CalculatePathLength(gt);
+    std::cout << "Test Case 3: New Orleans Fish Market -> Which Wich? -> Chick-fil-A" << std::endl;
+    std::cout << "Calculated Path Length: " << calculated_distance << " miles" << std::endl;
+    std::cout << "Expected Path Length: " << expected_distance << " miles" << std::endl;
+    EXPECT_NEAR(calculated_distance, expected_distance, 0.001);
 }

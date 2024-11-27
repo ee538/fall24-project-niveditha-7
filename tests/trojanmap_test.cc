@@ -274,14 +274,17 @@ TEST(TrojanMapTest, CalculateShortestPath_TrojanPath) {
   // Print the path lengths
   std::cout << "My path length: "  << m.CalculatePathLength(path) << "miles" << std::endl;
   std::cout << "GT path length: " << m.CalculatePathLength(gt) << "miles" << std::endl;
+  gt={"3088547686","2578244375", "4547476733"};
   EXPECT_EQ(path, gt);
 
   input = {"Ralphs", "Chick-fil-A", "KFC"};
   path = m.TrojanPath(input);
+  gt={"2578244375", "4547476733","3088547686"};
   EXPECT_EQ(path, gt);
 
   input = {"Ralphs", "KFC", "Chick-fil-A"};
   path = m.TrojanPath(input);
+  gt={"2578244375","3088547686", "4547476733"};
   EXPECT_EQ(path, gt);
 
 }

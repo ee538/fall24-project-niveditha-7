@@ -138,6 +138,16 @@ class TrojanMap {
       std::vector<std::string> location_ids);
 
   std::vector<std::string> TrojanPath(std::vector<std::string> &location_names);
+  // this is gonna help calculating the shortest path
+  void Backtracking(std::vector<std::string> &current_path,
+                    //visited nodes
+                    std::set<std::string> &visited,
+                    // places to visit
+                    const std::vector<std::string> &location_ids,
+                    // shortest path so far
+                    std::vector<std::string> &shortest_path,
+                    double &shortest_distance,
+                    const std::string &prev_id);
     
   // Check whether the id is in square or not
   bool inSquare(std::string id, std::vector<double> &square);
