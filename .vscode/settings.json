@@ -92,12 +92,7 @@
     "*.tcc": "cpp",
     "memory_resource": "cpp",
     "stop_token": "cpp",
-    "cfloat": "cpp",
-    "any": "cpp",
-    "charconv": "cpp",
-    "format": "cpp",
-    "span": "cpp",
-    "variant": "cpp"
+    "cfloat": "cpp"
   },
   "lldb.displayFormat": "auto",
   "lldb.dereferencePointers": true,
