@@ -167,6 +167,27 @@ int TrojanMap::CalculateEditDistance(std::string a, std::string b) {
  */
 std::string TrojanMap::FindClosestName(std::string name) {
   std::string tmp = ""; // Start with a dummy word
+  int smallest_distance = INT_MAX;  // Start with the largest possible distance
+
+  // Iterate through all nodes in the map
+  for (const auto& node : data) {
+    const std::string& current_name = node.second.name;
+
+    // Skip nodes with empty names
+    if (current_name.empty()) {
+      continue;
+    }
+
+    // Calculate the edit distance using the existing function
+    int current_distance = CalculateEditDistance(name, current_name);
+
+    // Update the closest name if a smaller distance is found
+    if (current_distance < smallest_distance) {
+      smallest_distance = current_distance;
+      tmp = current_name;  // Use the original name for the result
+    }
+  }
+
   return tmp;
 }
 
@@ -568,6 +589,45 @@ std::vector<std::string> TrojanMap::CalculateShortestPath_Bellman_Ford(
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_Brute_force(
                                     std::vector<std::string> location_ids) {
   std::pair<double, std::vector<std::vector<std::string>>> records;
+  // Handle the edge case where there are no locations
+  if (location_ids.empty()) {
+    return records;
+  }
+  
+  // Initialize minimum distance and optimal path
+  double min_distance = std::numeric_limits<double>::max();
+  std::vector<std::string> optimal_path;
+
+  // Generate all permutations of the locations (excluding the first location as the start point)
+  std::vector<std::string> perm_locations = location_ids;
+  perm_locations.erase(perm_locations.begin());
+  std::sort(perm_locations.begin(), perm_locations.end());
+
+  do {
+    // Construct the full path (start -> permutation -> start)
+    std::vector<std::string> current_path = {location_ids[0]};
+    current_path.insert(current_path.end(), perm_locations.begin(), perm_locations.end());
+    current_path.push_back(location_ids[0]);
+
+    // Calculate the distance of the current path
+    double current_distance = CalculatePathLength(current_path);
+
+    // Store the path in records
+    records.second.push_back(current_path);
+
+    // Updating the minimum distance and the optimal path if this path is shorter
+    if (current_distance < min_distance) {
+      min_distance = current_distance;
+      optimal_path = current_path;
+    }
+
+  } while (std::next_permutation(perm_locations.begin(), perm_locations.end())); //https://cplusplus.com/reference/algorithm/next_permutation/
+
+  // Setting the minimum distance in records
+  records.first = min_distance;
+
+  // Adding the optimal path to the records
+  records.second.push_back(optimal_path);
   return records;
 }
 
@@ -575,13 +635,90 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTro
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_Backtracking(
                                     std::vector<std::string> location_ids) {
   std::pair<double, std::vector<std::vector<std::string>>> records;
+  // Handle the edge case where there are no locations
+  if (location_ids.empty()) {
+    return records;
+  }
+
+  // Initialize variables
+  double min_distance = std::numeric_limits<double>::max(); // Minimum distance found
+  std::vector<std::string> optimal_path;                   // Stores the shortest path
+  std::vector<std::string> current_path;                   // Path being explored
+  current_path.push_back(location_ids[0]);                 // Start at the first location
+
+  // Helper function to perform backtracking
+  auto backtrack = [&](auto&& backtrack, std::string current_node, double current_distance) -> void {
+    // If all locations are visited, calculate the round trip and update the result
+    if (current_path.size() == location_ids.size()) {
+      double round_trip_distance = current_distance + CalculateDistance(current_node, location_ids[0]);
+      current_path.push_back(location_ids[0]); // Complete the round trip
+      records.second.push_back(current_path); // Store the completed path
+      
+      if (round_trip_distance < min_distance) {
+        min_distance = round_trip_distance;
+        optimal_path = current_path;
+      }
+      current_path.pop_back(); // Backtrack to remove the round trip
+      return;
+    }
+
+    // Explore all unvisited locations
+    for (const auto& next_node : location_ids) {
+      if (std::find(current_path.begin(), current_path.end(), next_node) == current_path.end()) {
+        current_path.push_back(next_node); // Visit the next location
+        double distance_to_next = CalculateDistance(current_node, next_node);
+        backtrack(backtrack, next_node, current_distance + distance_to_next);
+        current_path.pop_back(); // Backtrack to explore a different path
+      }
+    }
+  };
+
+  // Start backtracking from the first location
+  backtrack(backtrack, location_ids[0], 0.0);
+
+  // Store the minimum distance and optimal path
+  records.first = min_distance;
+  records.second.push_back(optimal_path);
   return records;
+  
 }
 
 // Hint: https://en.wikipedia.org/wiki/2-opt
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_2opt(
       std::vector<std::string> location_ids){
   std::pair<double, std::vector<std::vector<std::string>>> records;
+  double best_distance = std::numeric_limits<double>::max();
+    std::vector<std::string> best_path = location_ids;
+    best_path.push_back(location_ids[0]); // Return to start
+    std::vector<std::vector<std::string>> progress;
+
+    bool improvement = true;
+    while (improvement) {
+        improvement = false;
+        for (int i = 1; i < location_ids.size() - 1; ++i) {
+            for (int j = i + 1; j < location_ids.size(); ++j) {
+                // Swap edges
+                std::vector<std::string> new_path = best_path;
+                std::reverse(new_path.begin() + i, new_path.begin() + j + 1);
+
+                // Calculate distance
+                double new_distance = 0;
+                for (int k = 0; k < new_path.size() - 1; ++k) {
+                    new_distance += CalculateDistance(new_path[k], new_path[k + 1]);
+                }
+
+                if (new_distance < best_distance) {
+                    best_distance = new_distance;
+                    best_path = new_path;
+                    progress.push_back(new_path);
+                    improvement = true;
+                }
+            }
+        }
+    }
+
+    records.first = best_distance;
+    records.second = progress;
   return records;
 }
 
@@ -811,6 +948,42 @@ bool TrojanMap::CycleDetection(std::vector<std::string> &subgraph, std::vector<d
  */
 std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::string name, double r, int k) {
   std::vector<std::string> res;
+   // Validate if the location exists in the map
+  std::string location_id = GetID(name);
+  if (location_id.empty()) {
+    std::cout << "Error: Location not found - " << name << std::endl;
+    return res;  // If the location does not exist, return an empty result
+  }
+
+  // Retrieve all locations with the specified attribute
+  auto matching_ids = GetAllLocationsFromCategory(attributesName);
+  if (matching_ids.empty()) {
+    std::cout << "Error: No locations found with attribute - " << attributesName << std::endl;
+    return res;
+  }
+
+  // Vector to store distances and matching locations
+  std::vector<std::pair<double, std::string>> candidates;
+
+  for (const auto& id : matching_ids) {
+    if (id == location_id) continue;  // Skip the given location itself
+
+    // Calculate the distance using the IDs
+    double distance = CalculateDistance(location_id, id);
+
+    // Include only those within the specified radius
+    if (distance <= r) {
+      candidates.push_back({distance, id});
+    }
+  }
+
+  // Sorting the candidates by distance (nearest to farthest)
+  std::sort(candidates.begin(), candidates.end());
+
+  // Adding  up to `k` closest locations to the result
+  for (int i = 0; i < std::min(k, (int)candidates.size()); ++i) {
+    res.push_back(candidates[i].second);  // Add the ID of the location
+  }
   return res;
 }
 
