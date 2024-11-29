@@ -323,7 +323,7 @@ TEST(TrojanMapTest, CycleDetection) {
   EXPECT_EQ(result2, true);
 }
 //Test TopologicalSort
-// Test cycle detection function with 5 nodes
+// Test function with 5 nodes
 TEST(TrojanMapTest, TopologicalSort5) {
   TrojanMap m;
 
@@ -341,7 +341,7 @@ TEST(TrojanMapTest, TopologicalSort5) {
   EXPECT_EQ(result, gt);
 }
 
-// Test cycle detection function with 8 nodes
+
 TEST(TrojanMapTest, TopologicalSortWithEightNodes) {
   TrojanMap m;
   std::vector<std::string> location_names = {
@@ -365,6 +365,12 @@ TEST(TrojanMapTest, TopologicalSortWithEightNodes) {
       "Chase"  };
   EXPECT_EQ(result, gt);
 }
+
+
+
+
+
+
 
 // Test 1 for Queries Function
 TEST(TrojanMapTest, Queries) {
@@ -401,6 +407,138 @@ TEST(TrojanMapTest, Queries3) {
   EXPECT_EQ(expected, actual);
 }
 
+
+
+TEST(TrojanMapStudentTest, TSP_Brute_force) {
+  TrojanMap m;
+  
+//3 locations test
+  std::vector<std::string> input{"4399693647", "2578244375", "7771782316"}; 
+  auto result = m.TravelingTrojan_Brute_force(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl;
+  std::vector<std::string> gt{"4399693647", "2578244375", "7771782316", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  bool flag = false;
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  std::reverse(gt.begin(),gt.end()); 
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  
+  EXPECT_EQ(flag, true);
+
+//test with zero inputs. It should reult in 0  
+  input = {}; 
+  result = m.TravelingTrojan_Brute_force(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second.size(), 0);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+//test with one input ID. It should again return 0.
+  
+  input = {"4399693647"}; 
+  result = m.TravelingTrojan_Brute_force(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {"4399693647", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second[result.second.size() - 1].size(), 2);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+
+}
+
+TEST(TrojanMapStudentTest, TSP_Backtracking) {
+  TrojanMap m;
+  
+//3 locations test
+  std::vector<std::string> input{"4399693647", "2578244375", "7771782316"}; 
+  auto result = m.TravelingTrojan_Backtracking(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl;
+  std::vector<std::string> gt{"4399693647", "2578244375", "7771782316", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  bool flag = false;
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  std::reverse(gt.begin(),gt.end()); 
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  
+  EXPECT_EQ(flag, true);
+
+//test with zero inputs. It should reult in 0  
+  input = {}; 
+  result = m.TravelingTrojan_Backtracking(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second.size(), 0);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+//test with one input ID. It should again return 0.
+  
+  input = {"4399693647"}; 
+  result = m.TravelingTrojan_Backtracking(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {"4399693647", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second[result.second.size() - 1].size(), 2);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+
+}
+
+TEST(TrojanMapStudentTest, TSP2opt) {
+  TrojanMap m;
+  
+//3 locations test
+  std::vector<std::string> input{"4399693647", "2578244375", "7771782316"}; 
+  auto result = m.TravelingTrojan_2opt(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl;
+  std::vector<std::string> gt{"4399693647", "2578244375", "7771782316", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  bool flag = false;
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  std::reverse(gt.begin(),gt.end()); 
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  
+  EXPECT_EQ(flag, true);
+
+//test with zero inputs. It should reult in 0  
+  input = {}; 
+  result = m.TravelingTrojan_2opt(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second.size(), 0);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+
+//test with one input ID. It should again return 0.
+  
+  input = {"4399693647"}; 
+  result = m.TravelingTrojan_2opt(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl; 
+  gt = {"4399693647", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  EXPECT_EQ(result.second[result.second.size() - 1].size(), 2);
+  EXPECT_EQ(m.CalculatePathLength(gt), 0);
+}
+
+TEST(TrojanMapTest, FindNearby_NoPoints) {
+  TrojanMap m;
+
+  // No locations of this class
+  auto result = m.FindNearby("nonexistent_class", "Ralphs", 10, 10);
+  std::vector<std::string> ans = {};
+  EXPECT_EQ(result, ans); // Should return an empty vector
+}
+TEST(TrojanMapTest, FindNearby_InvalidLocation) {
+  TrojanMap m;
+
+  // Invalid location name
+  auto result = m.FindNearby("supermarket", "NonexistentLocation", 10, 10);
+  std::vector<std::string> ans = {};
+  EXPECT_EQ(result, ans); // Should return an empty vector
+}
 
 // TrojanPath Tests
 // performing 3 tests on one function
