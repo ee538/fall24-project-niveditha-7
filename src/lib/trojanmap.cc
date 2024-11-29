@@ -687,6 +687,17 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTro
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_2opt(
       std::vector<std::string> location_ids){
   std::pair<double, std::vector<std::vector<std::string>>> records;
+
+  // Handle the edge case where there are no locations
+  if (location_ids.empty()) {
+    return records;
+  }
+  // Handle the edge case where there is only one location
+  if (location_ids.size() == 1) {
+    records.first = 0.0;
+    records.second.push_back({location_ids[0], location_ids[0]}); // Round trip
+    return records;
+  }
   double best_distance = std::numeric_limits<double>::max();
     std::vector<std::string> best_path = location_ids;
     best_path.push_back(location_ids[0]); // Return to start

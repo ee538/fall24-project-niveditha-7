@@ -246,7 +246,23 @@ Time taken by function: 2 ms
 answer : runtime of auto complete : Iterating through all the nodes -> O(n);
 converting each string to lower -> O(l) so combines run time complexity is O(n*l).
  
- 
+our report:
+**************************************************************
+* 1. Autocomplete                                             
+**************************************************************
+
+Please input a partial location:uni
+*************************Results******************************
+Union & 18th 1
+Union & 18th
+University Park
+University S.D.A. Church Food Pantry
+University Seventh Day Adventist Church
+United Church of Christ Scientist
+Universal Truck Driving School
+**************************************************************
+Time taken by function: 2 ms
+
 ## Item 2-1: Find the place's coordinates in the Map (Phase 1)
 
 ```c++
@@ -328,6 +344,19 @@ Latitude: 34.0318 Longitude: -118.291
 Time taken by function: 2 ms
 ```
 
+our report:
+**************************************************************
+* 2. Find the location                                        
+**************************************************************
+
+Please input a location:The Cofffe a tea le              
+*************************Results******************************
+No matched locations.
+Did you mean The Coffee Bean & Tea Leaf instead of The Cofffe a tea le? [y/n]y
+Latitude: 34.0172 Longitude: -118.282
+**************************************************************
+Time taken by function: 2 ms
+
 ## Item 3: Get All Categories (Phase 2)
 
 ```c++
@@ -372,7 +401,7 @@ Please report and compare the time spent by these algorithms.
 
 **You should create a table like below, which includes the runtime of the algorithm for several examples.**
 
-| Point A to Point B      | Dijkstra | Bellman Ford| Bellman Ford optimized|
+| Point A to Point B      | Dijkstra | Bellman Ford optimmized| Bellman Ford non-optimized|
 | -------------------- | ----------- |-------|-----|
 |                      |  t1 (ms)    | t2 (ms)    |   t3 (ms) |
 |Ralphs to Target      |  56         | 5313  |       |
@@ -612,6 +641,68 @@ Time taken by function: 0 ms
 <p align="center"><img src="img/TSP.png" alt="TSP" width="500"/></p>
 
 <p align="center"><img src="img/output.gif" alt="TSP videos" width="500"/></p>
+
+our reported result:
+
+Please input the number of the places:8
+"122670250","540998272","8474747073","304903519","6790384663","4399697335","1870795271","123132702",
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Brute_force
+"122670250","1870795271","6790384663","540998272","304903519","123132702","8474747073","4399697335","122670250",
+The distance of the path is:7.0713 miles
+**************************************************************
+You could find your animation at src/lib/output0.avi.          
+Time taken by function: 49 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Backtracking
+"122670250","1870795271","6790384663","540998272","304903519","123132702","8474747073","4399697335","122670250",
+The distance of the path is:7.0713 miles
+**************************************************************
+You could find your animation at src/lib/output0_backtracking.avi.
+Time taken by function: 46 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_2opt
+"122670250","1870795271","4399697335","6790384663","540998272","304903519","123132702","8474747073","122670250",
+The distance of the path is:7.11906 miles
+**************************************************************
+You could find your animation at src/lib/output0_2opt.avi.     
+Time taken by function: 2 ms
+
+our result:
+
+Please input the number of the places:8
+"122670250","540998272","8474747073","304903519","6790384663","4399697335","1870795271","123132702",
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Brute_force
+"122670250","1870795271","6790384663","540998272","304903519","123132702","8474747073","4399697335","122670250",
+The distance of the path is:7.0713 miles
+**************************************************************
+You could find your animation at src/lib/output0.avi.          
+Time taken by function: 49 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Backtracking
+"122670250","1870795271","6790384663","540998272","304903519","123132702","8474747073","4399697335","122670250",
+The distance of the path is:7.0713 miles
+**************************************************************
+You could find your animation at src/lib/output0_backtracking.avi.
+Time taken by function: 46 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_2opt
+"122670250","1870795271","4399697335","6790384663","540998272","304903519","123132702","8474747073","122670250",
+The distance of the path is:7.11906 miles
+**************************************************************
+You could find your animation at src/lib/output0_2opt.avi.     
+Time taken by function: 2 ms
 
 
 ## Item 10: Find Nearby (Phase 3)
