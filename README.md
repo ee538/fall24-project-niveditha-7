@@ -765,6 +765,35 @@ You could find your animation at src/lib/output0_2opt.avi.
 Time taken by function: 2 ms
 
 
+Please input the number of the places:6
+"6790646135","1855166551","1732243851","6805760714","122996001","6813411589",
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Brute_force
+"6790646135","1855166551","6805760714","122996001","6813411589","1732243851","6790646135",
+The distance of the path is:5.37418 miles
+**************************************************************
+You could find your animation at src/lib/output0.avi.          
+Time taken by function: 59 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Backtracking
+"6790646135","1855166551","6805760714","122996001","6813411589","1732243851","6790646135",
+The distance of the path is:5.37418 miles
+**************************************************************
+You could find your animation at src/lib/output0_backtracking.avi.
+Time taken by function: 8 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_2opt
+"6790646135","1855166551","6805760714","122996001","6813411589","1732243851","6790646135",
+The distance of the path is:5.37418 miles
+**************************************************************
+You could find your animation at src/lib/output0_2opt.avi.     
+Time taken by function: 0 ms
+
 ## Item 10: Find Nearby (Phase 3)
 
 Given an attribute name `C`, a location name `L` and a number `r` and `k`, find at most `k` locations in attribute `C` on the map near `L`(do not include `L`) with the range of `r` and return a vector of string ids. 
