@@ -737,8 +737,60 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTro
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_3opt(
       std::vector<std::string> location_ids){
   std::pair<double, std::vector<std::vector<std::string>>> records;
+   // Handle the edge case where no locations are provided
+  if (location_ids.empty()) {
+    return records;
+  }
+
+  // Initialize the initial path (start and return to the first location)
+  std::vector<std::string> best_path = location_ids;
+  best_path.push_back(location_ids[0]); // Add the starting point at the end
+
+  // Calculate the initial distance
+  double best_distance = CalculatePathLength(best_path);
+  records.second.push_back(best_path); // Add the initial path to progress
+
+  bool improved = true;
+
+  while (improved) {
+    improved = false;
+
+    for (int i = 1; i < best_path.size() - 2; ++i) {
+      for (int j = i + 1; j < best_path.size() - 1; ++j) {
+        for (int k = j + 1; k < best_path.size(); ++k) {
+          // Perform the 3-opt swap
+          std::vector<std::string> new_path = Perform3OptSwap(best_path, i, j, k);
+          double new_distance = CalculatePathLength(new_path);
+
+          // If the new path is shorter, update the best path and distance
+          if (new_distance < best_distance) {
+            best_path = new_path;
+            best_distance = new_distance;
+            records.second.push_back(best_path); // Track progress
+            improved = true;
+          }
+        }
+      }
+    }
+  }
+
+  records.first = best_distance;  // Store the best distance
   return records;
 }
+
+std::vector<std::string> TrojanMap::Perform3OptSwap(
+      const std::vector<std::string>& path, int i, int j, int k) {
+  std::vector<std::string> new_path;
+
+  // 1. Reverse segment [i+1, j] and segment [j+1, k]
+  new_path.insert(new_path.end(), path.begin(), path.begin() + i + 1);
+  new_path.insert(new_path.end(), path.rbegin() + (path.size() - 1 - k), path.rbegin() + (path.size() - 1 - j));
+  new_path.insert(new_path.end(), path.rbegin() + (path.size() - 1 - j), path.rbegin() + (path.size() - 1 - i));
+  new_path.insert(new_path.end(), path.begin() + k + 1, path.end());
+
+  return new_path;
+}
+
 
 /**
  * Given CSV filename, it read and parse locations data from CSV file,

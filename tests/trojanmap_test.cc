@@ -359,19 +359,4 @@ TEST(TrojanMapTest, Queries) {
   std::vector<bool> expected {true, false, false, false};
   EXPECT_EQ(expected, actual);
 }
-TEST(TrojanMapTest, FindNearby_NoPoints) {
-  TrojanMap m;
 
-  // No locations of this class
-  auto result = m.FindNearby("nonexistent_class", "Ralphs", 10, 10);
-  std::vector<std::string> ans = {};
-  EXPECT_EQ(result, ans); // Should return an empty vector
-}
-TEST(TrojanMapTest, FindNearby_InvalidLocation) {
-  TrojanMap m;
-
-  // Invalid location name
-  auto result = m.FindNearby("supermarket", "NonexistentLocation", 10, 10);
-  std::vector<std::string> ans = {};
-  EXPECT_EQ(result, ans); // Should return an empty vector
-}

@@ -375,6 +375,18 @@ std::vector<std::string> GetAllLocationsFromCategory(std::string category);
 
 In this section if the user entries a category, the program prints all locations that match that category. For example, if there is a category called "bank", your program should print all location ids that match the "bank" category. 
 
+report:
+**************************************************************
+4
+
+**************************************************************
+* 4. Get all locations in a category                           
+**************************************************************
+
+Please input the category:library
+"368169838", "368169842", "3699294513", "6042978413", "368169848", TrojanMap Menu
+**************************************************************
+
 ## Item 5: Get Locations Using A Regular Expression (Phase 2)
 
 ```c++
@@ -449,6 +461,27 @@ The distance of the path is:0.927969 miles
 Time taken by function: 7084 ms
 ```
 
+our result
+**************************************************************
+* 6. CalculateShortestPath                                    
+**************************************************************
+
+Please input the start location:Chase
+Please input the destination:Los Angeles (University of Southern California)
+*************************Dijkstra*****************************
+*************************Results******************************
+"9591449441","9559739232","3398574883","6814916518","5690152757","6814916510","3398574890","6813379493","4015423961","4015423960","7860380185","4015423959","9591448314","1841835270","2193435032","1378231753","9591449436","123292100","123292045","6939732877","6122247089",
+The distance of the path is:0.27959 miles
+**************************************************************
+Time taken by function: 18 ms
+
+*************************Bellman_Ford*************************
+*************************Results******************************
+"9591449441","9559739232","3398574883","6814916518","5690152757","6814916510","3398574890","6813379493","4015423961","4015423960","7860380185","4015423959","9591448314","1841835270","2193435032","1378231753","9591449436","123292100","123292045","6939732877","6122247089",
+The distance of the path is:0.27959 miles
+**************************************************************
+Time taken by function: 4912 ms
+
 <p align="center"><img src="img/Routing.png" alt="Routing" width="500"/></p>
 
 
@@ -510,6 +543,33 @@ there exist no cycle in the subgraph
 **************************************************************
 Time taken by function: 0 ms
 ```
+report:
+**************************************************************
+* 7. Cycle Detection                                          
+**************************************************************
+
+Please input the left bound longitude(between -118.320 and -118.250):-118.290
+Please input the right bound longitude(between -118.320 and -118.250):-118.275
+Please input the upper bound latitude(between 34.000 and 34.040):34.032
+Please input the lower bound latitude(between 34.000 and 34.040):34.011
+*************************Results******************************
+there exists a cycle in the subgraph 
+**************************************************************
+Time taken by function: 16 ms
+
+**************************************************************
+* 7. Cycle Detection                                          
+**************************************************************
+
+Please input the left bound longitude(between -118.320 and -118.250):-118.319
+Please input the right bound longitude(between -118.320 and -118.250):-118.249
+Please input the upper bound latitude(between 34.000 and 34.040):34.008
+Please input the lower bound latitude(between 34.000 and 34.040):34.039
+*************************Results******************************
+there exist no cycle in the subgraph 
+**************************************************************
+Time taken by function: 0 ms
+
 
 ## Item 8: Topological Sort (Phase 2)
 

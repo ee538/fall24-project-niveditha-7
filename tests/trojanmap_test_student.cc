@@ -523,6 +523,30 @@ TEST(TrojanMapStudentTest, TSP2opt) {
   EXPECT_EQ(m.CalculatePathLength(gt), 0);
 }
 
+
+
+TEST(TrojanMapStudentTest, TSP3opt) {
+  TrojanMap m;
+  
+//3 locations test
+  std::vector<std::string> input{"4399693647", "2578244375", "7771782316"}; 
+  auto result = m.TravelingTrojan_3opt(input);
+  std::cout << "My path length: "  << result.first << "miles" << std::endl;
+  std::vector<std::string> gt{"4399693647", "2578244375", "7771782316", "4399693647"}; 
+  std::cout << "GT path length: "  << m.CalculatePathLength(gt) << "miles" << std::endl; 
+  bool flag = false;
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  std::reverse(gt.begin(),gt.end()); 
+  if (gt == result.second[result.second.size()-1]) 
+    flag = true;
+  
+  EXPECT_EQ(flag, true);
+
+
+}
+
+
 TEST(TrojanMapTest, FindNearby_NoPoints) {
   TrojanMap m;
 
