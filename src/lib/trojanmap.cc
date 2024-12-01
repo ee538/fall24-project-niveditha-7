@@ -345,84 +345,67 @@ double TrojanMap::CalculatePathLength(const std::vector<std::string> &path) {
  */
 std::vector<std::string> TrojanMap::CalculateShortestPath_Dijkstra(
     std::string location1_name, std::string location2_name) {
-  
-  std::vector<std::string> path;// to store the final path
+ // for Reconstructing the path from goal to start
+  std::vector<std::string> path;
   if(location1_name ==location2_name)
   {
     return path;
   }
-  //gettig IDs for start and end location
-  std::string start_location = GetID(location1_name);
-  std::string end_location = GetID(location2_name);
-  if (data.find(start_location) == data.end() || data.find(end_location) == data.end()) {
-        std::cout << "One or both locations do not exist in the map." << std::endl;
-        return {};  // Return an empty path if either location is missing
+  // Get unique IDs for the start and destination locations
+  std::string start_id = TrojanMap::GetID(location1_name);
+  std::string goal_id = TrojanMap::GetID(location2_name);
+
+  // Priority queue to explore nodes in order of shortest known distance
+  std::priority_queue<std::pair<double, std::string>, std::vector<std::pair<double, std::string>>, std::greater<>> pq;
+
+  // Map to store the shortest distance and the corresponding path for each node
+  std::unordered_map<std::string, double> distances;
+  std::unordered_map<std::string, std::string> predecessors;
+
+  // Initialize all distances to infinity
+  for (const auto &node : data) {
+    distances[node.first] = std::numeric_limits<double>::max();
   }
 
-  //creating an unordered map to store the shortest path from start nodes
-  std::unordered_map<std::string, double> short_distance_from_start;
+  // Distance to the start node is zero
+  distances[start_id] = 0;
+  pq.push({0, start_id});
 
-  //unordered map to store the previous distance 
-  std::unordered_map<std::string, std::string> prev_distance;
-  //unordered map to store the visited nodes
-  std::unordered_map<std::string, double> visited_nodes;
+  // Process nodes in the priority queue
+  while (!pq.empty()) {
+    auto [current_distance, current_id] = pq.top();
+    pq.pop();
 
-  //auto initialising all the distances initially to infinity and setting visited to false
-  for(auto &node:data)
-  {
-    short_distance_from_start[node.first] = INT_MAX;
-    visited_nodes[node.first] = false;
+    // Stop if we reach the goal node
+    if (current_id == goal_id) break;
+
+    // Explore neighbors of the current node
+    for (const auto &neighbor_id : data[current_id].neighbors) {
+      double new_distance = current_distance + TrojanMap::CalculateDistance(current_id, neighbor_id);
+
+      // If a shorter path to the neighbor is found, update it
+      if (new_distance < distances[neighbor_id]) {
+        distances[neighbor_id] = new_distance;
+        predecessors[neighbor_id] = current_id;
+        pq.push({new_distance, neighbor_id});
+      }
+    }
   }
-  //Set up the priority queue with pairs of distance(double) and node ID(string), and store it in vector format with min-heap structure
-  std::priority_queue<std::pair<double, std::string>,      
-  std::vector<std::pair<double, std::string>>, std::greater<std::pair<double, std::string>>> min_distance_queue;
-  // Initialize the starting node's distance to 0 and add it to the priority queue
-    short_distance_from_start[start_location] = 0; // to itself will be zero 
-    min_distance_queue.push({0, start_location});
-     // Begin Dijkstra's algorithm
-    while (!min_distance_queue.empty()) {
-        std::string current = min_distance_queue.top().second; //second gives us node ID
-        min_distance_queue.pop();
 
-        // If the node has been visited, skip it
-        if (visited_nodes[current]) continue;
-
-        // Mark the current node as visited
-        visited_nodes[current] = true;
-
-        // If we've reached the goal, break out of the loop(if currentID is eequal to end ID)
-        if (current == end_location) break;
-
-        // For each neighbor of the current node
-        for (auto &neighbor : GetNeighborIDs(current)) {
-            // Calculate distance to the neighbor
-            double weight = CalculateDistance(current, neighbor);
-            
-            // Relaxation step: check if a shorter path is found
-            if (short_distance_from_start[current] + weight < short_distance_from_start[neighbor]) {
-                short_distance_from_start[neighbor] = short_distance_from_start[current] + weight;
-                prev_distance[neighbor] = current;
-                min_distance_queue.push({short_distance_from_start[neighbor], neighbor});
-            }
-        }
+  
+  for (std::string at = goal_id; at != start_id; at = predecessors[at]) {
+    if (predecessors.find(at) == predecessors.end()) {
+      return {}; // No path found
     }
-
-    // once the loop ends, trace back the path from goal to start using the `previous` map until it reaches start location
-    for (std::string at = end_location; at != ""; at = prev_distance[at]) {
-        path.push_back(at); //each node is being added to the path vector
-        if (at == start_location) break;
-    }
-
-    // Reverse to get the path from start to goal
-    std::reverse(path.begin(), path.end()); //since nodes are stored in reverse order in path
-
-    // If the start node is not in path, it means no path was found
-    if (path.empty() || path[0] != start_location) {
-        return {};  // Return empty if no valid path exists
-    }
+    path.push_back(at);
+  }
+  path.push_back(start_id);
+  std::reverse(path.begin(), path.end());
 
   return path;
 }
+
+
 
 /**
  * CalculateShortestPath_Bellman_Ford: Given 2 locations, return the shortest
@@ -1097,47 +1080,6 @@ std::vector<std::string> TrojanMap::FindNearby(std::string attributesName, std::
   return res;
 }
 
-// implementation of backtracking function
-void TrojanMap::Backtracking(std::vector<std::string> &current_path,
-                             std::set<std::string> &visited,
-                             const std::vector<std::string> &location_ids,
-                             std::vector<std::string> &shortest_path,
-                             double &shortest_distance,
-                             const std::string &prev_id) {
-    // case all locations been visited
-    if (visited.size() == location_ids.size()) {
-        double current_distance = 0.0;
-
-        // distance of current path
-        for (size_t i = 0; i < current_path.size() - 1; ++i) {
-            current_distance += CalculatePathLength(
-                CalculateShortestPath_Dijkstra(current_path[i], current_path[i + 1]));
-        }
-
-        // updating shortest path if current path is shorter
-        if (current_distance < shortest_distance) {
-            shortest_distance = current_distance;
-            shortest_path = current_path;
-        }
-        return;
-    }
-
-    // recursive case to try unvisited locations
-    for (const auto &location_id : location_ids) {
-        if (visited.find(location_id) == visited.end()) {
-            // marks the location as visited, then adds it to the path
-            visited.insert(location_id);
-            current_path.push_back(location_id);
-
-            // backtracking
-            Backtracking(current_path, visited, location_ids, shortest_path, shortest_distance, location_id);
-
-            // unmarks the location and removes it from path
-            visited.erase(location_id);
-            current_path.pop_back();
-        }
-    }
-}
 
 
 
@@ -1151,36 +1093,104 @@ void TrojanMap::Backtracking(std::vector<std::string> &current_path,
 std::vector<std::string> TrojanMap::TrojanPath(
       std::vector<std::string> &location_names) {
     std::vector<std::string> res;
-
-
-    if (location_names.empty()) return res;
-
-    // converting each location name to ID
-    std::vector<std::string> location_ids;
-    for (const auto &name : location_names) {
-        std::string id = GetID(name);
-        if (!id.empty()) {
-            location_ids.push_back(id);
-        } else {
-            std::cerr << "Error: Location '" << name << "' not found in the map!" << std::endl;
-        }
-    }
-    // case empty
-    if (location_ids.empty()) return res;
-
-    // initializing variables for backtracking
-    std::vector<std::string> current_path;
-    std::vector<std::string> shortest_path;
-    std::set<std::string> visited;
-    double shortest_distance = std::numeric_limits<double>::max();
-
-    // calling backtracking function
-    Backtracking(current_path, visited, location_ids, shortest_path, shortest_distance, "");
-
-    res= shortest_path;
-
+    // Handle empty input case
+  if (location_names.empty()) {
+    std::cerr << "Error: Input location list is empty!" << std::endl;
     return res;
+  }
+// Convert location names to unique IDs
+  std::vector<std::string> location_ids;
+  for (const auto &location_name : location_names) {
+    location_ids.push_back(TrojanMap::GetID(location_name));
+  }
+
+  // Precompute distances and paths between all pairs of locations
+  std::map<std::pair<std::string, std::string>, double> distance_map; // Stores pairwise distances
+  std::map<std::pair<std::string, std::string>, std::vector<std::string>> path_map; // Stores pairwise shortest paths
+
+  for (const auto &source_id : location_ids) {
+    for (const auto &destination_id : location_ids) {
+      if (source_id != destination_id) {
+        // Compute shortest path and its distance
+        auto shortest_path = TrojanMap::CalculateShortestPath_Dijkstra(TrojanMap::GetName(source_id), TrojanMap::GetName(destination_id));
+        path_map[{source_id, destination_id}] = shortest_path;
+        distance_map[{source_id, destination_id}] = TrojanMap::CalculatePathLength(shortest_path);
+      }
+    }
+  }
+
+  // Use backtracking to find the optimal path visiting all locations
+  double shortest_total_distance = std::numeric_limits<double>::max();
+  std::vector<std::string> current_path, best_path;
+  std::set<std::string> visited_locations;
+
+  SolveTSPWithBacktracking(current_path, visited_locations, location_ids, best_path, shortest_total_distance, distance_map);
+
+  // Construct the full path using the pairwise shortest paths
+  for (size_t i = 0; i < best_path.size() - 1; ++i) {
+    const auto &segment = path_map[{best_path[i], best_path[i + 1]}];
+    res.insert(res.end(), segment.begin(), segment.end());
+
+    // Avoid duplicating nodes between consecutive segments
+    if (i != best_path.size() - 2) {
+      res.pop_back();
+    }
+  }
+
+  return res; // Return the final shortest path
+
+  
 }
+
+
+void TrojanMap::SolveTSPWithBacktracking(std::vector<std::string> &current_path,
+                                         std::set<std::string> &visited,
+                                         const std::vector<std::string> &all_locations,
+                                         std::vector<std::string> &best_path,
+                                         double &shortest_distance,
+                                         const std::map<std::pair<std::string, std::string>, double> &distance_map) {
+  // Base case: If all locations are visited
+  if (visited.size() == all_locations.size()) {
+    double current_distance = 0;
+
+    // Calculate the total distance of the current path
+    for (size_t i = 0; i < current_path.size() - 1; i++) {
+      // Fetch the distance directly from the map
+      auto it = distance_map.find({current_path[i], current_path[i + 1]});
+      if (it != distance_map.end()) {
+        current_distance += it->second;
+      } else {
+        // If distance is not precomputed, assume an infinitely large value
+        current_distance += std::numeric_limits<double>::max();
+      }
+    }
+
+    // Update the shortest distance and best path if the current path is shorter
+    if (current_distance < shortest_distance) {
+      best_path = current_path;
+      shortest_distance = current_distance;
+    }
+    return;
+  }
+
+  // Recursive exploration of paths
+  for (const auto &location_id : all_locations) {
+    if (visited.find(location_id) == visited.end()) {
+      // Add the location to the current path and mark it as visited
+      visited.insert(location_id);
+      current_path.push_back(location_id);
+
+      // Recurse to explore further paths
+      SolveTSPWithBacktracking(current_path, visited, all_locations, best_path, shortest_distance, distance_map);
+
+      // Backtrack to explore alternative paths
+      visited.erase(location_id);
+      current_path.pop_back();
+    }
+  }
+}
+
+
 
 /**
  * Given a vector of queries, find whether there is a path between the two locations with the constraint of the gas tank.

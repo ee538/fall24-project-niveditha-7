@@ -189,6 +189,14 @@ void Unite(std::unordered_map<std::string, std::string>& parent, const std::stri
 std::vector<std::vector<std::string>> Generate3OptCandidates(
     const std::vector<std::string>& path, int i, int j, int k);
 
+
+void SolveTSPWithBacktracking(std::vector<std::string> &current_path,
+                                         std::set<std::string> &visited,
+                                         const std::vector<std::string> &all_locations,
+                                         std::vector<std::string> &best_path,
+                                         double &shortest_distance,
+                                         const std::map<std::pair<std::string, std::string>, double> &distance_map);
+
 };
 
 #endif
