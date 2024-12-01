@@ -1,5 +1,7 @@
 #include "trojanmap.h"
 #include <unordered_map>
+#include <limits>
+
 //-----------------------------------------------------
 // TODO: Students should implement the following:
 //-----------------------------------------------------
@@ -688,48 +690,56 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTro
       std::vector<std::string> location_ids){
   std::pair<double, std::vector<std::vector<std::string>>> records;
 
-  // Handle the edge case where there are no locations
-  if (location_ids.empty()) {
-    return records;
-  }
-  // Handle the edge case where there is only one location
-  if (location_ids.size() == 1) {
-    records.first = 0.0;
-    records.second.push_back({location_ids[0], location_ids[0]}); // Round trip
-    return records;
-  }
-  double best_distance = std::numeric_limits<double>::max();
-    std::vector<std::string> best_path = location_ids;
-    best_path.push_back(location_ids[0]); // Return to start
-    std::vector<std::vector<std::string>> progress;
-
-    bool improvement = true;
-    while (improvement) {
-        improvement = false;
-        for (int i = 1; i < location_ids.size() - 1; ++i) {
-            for (int j = i + 1; j < location_ids.size(); ++j) {
-                // Swap edges
-                std::vector<std::string> new_path = best_path;
-                std::reverse(new_path.begin() + i, new_path.begin() + j + 1);
-
-                // Calculate distance
-                double new_distance = 0;
-                for (int k = 0; k < new_path.size() - 1; ++k) {
-                    new_distance += CalculateDistance(new_path[k], new_path[k + 1]);
-                }
-
-                if (new_distance < best_distance) {
-                    best_distance = new_distance;
-                    best_path = new_path;
-                    progress.push_back(new_path);
-                    improvement = true;
-                }
-            }
-        }
+   // Handle edge cases: no locations or a single location
+    if (location_ids.empty()) {
+        return records;
+    }
+    if (location_ids.size() == 1) {
+        double distance = 0.0;
+        records.first = distance;
+        records.second.push_back({location_ids[0], location_ids[0]}); // Round trip
+        return records;
     }
 
+    // Initialize the path and calculate its initial length
+    std::vector<std::string> current_path = location_ids;
+    current_path.push_back(location_ids[0]); // Make it a round trip
+    double best_distance = CalculatePathLength(current_path);
+
+    // Store the initial path
+    records.second.push_back(current_path);
     records.first = best_distance;
-    records.second = progress;
+
+    bool improved = true; // Flag to track if improvements are being made
+
+    // Repeat until no further improvement is possible
+    while (improved) {
+        improved = false;
+
+        // Iterate over all pairs of edges to swap
+        for (size_t i = 1; i < current_path.size() - 2; ++i) {
+            for (size_t j = i + 1; j < current_path.size() - 1; ++j) {
+                
+                // Generate a new path by swapping edges between i and j
+                std::vector<std::string> new_path = current_path;
+                std::reverse(new_path.begin() + i, new_path.begin() + j + 1);
+
+                // Calculate the distance of the new path
+                double new_distance = CalculatePathLength(new_path);
+
+                // Update if the new path is better
+                if (new_distance < best_distance) {
+                    current_path = new_path;
+                    best_distance = new_distance;
+                    records.second.push_back(current_path); // Save progress
+                    records.first = best_distance;
+                    improved = true; // Continue optimizing
+                    break; // Restart the loop to apply further swaps
+                }
+            }
+            if (improved) break;
+        }
+    }
   return records;
 }
 
@@ -737,58 +747,95 @@ std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTro
 std::pair<double, std::vector<std::vector<std::string>>> TrojanMap::TravelingTrojan_3opt(
       std::vector<std::string> location_ids){
   std::pair<double, std::vector<std::vector<std::string>>> records;
-   // Handle the edge case where no locations are provided
-  if (location_ids.empty()) {
-    return records;
-  }
+   
 
-  // Initialize the initial path (start and return to the first location)
-  std::vector<std::string> best_path = location_ids;
-  best_path.push_back(location_ids[0]); // Add the starting point at the end
-
-  // Calculate the initial distance
-  double best_distance = CalculatePathLength(best_path);
-  records.second.push_back(best_path); // Add the initial path to progress
-
-  bool improved = true;
-
-  while (improved) {
-    improved = false;
-
-    for (int i = 1; i < best_path.size() - 2; ++i) {
-      for (int j = i + 1; j < best_path.size() - 1; ++j) {
-        for (int k = j + 1; k < best_path.size(); ++k) {
-          // Perform the 3-opt swap
-          std::vector<std::string> new_path = Perform3OptSwap(best_path, i, j, k);
-          double new_distance = CalculatePathLength(new_path);
-
-          // If the new path is shorter, update the best path and distance
-          if (new_distance < best_distance) {
-            best_path = new_path;
-            best_distance = new_distance;
-            records.second.push_back(best_path); // Track progress
-            improved = true;
-          }
+    // Handle edge cases: no locations or a single location
+    if (location_ids.size() <= 1) {
+        double distance = 0.0;
+        if (!location_ids.empty()) {
+            records.second.push_back({location_ids[0], location_ids[0]}); // Round trip
         }
-      }
+        records.first = distance;
+        return records;
     }
-  }
 
-  records.first = best_distance;  // Store the best distance
-  return records;
+    // Initialize the path and calculate its initial length
+    std::vector<std::string> best_path = location_ids;
+    best_path.push_back(location_ids[0]); // Make it a round trip
+    double best_distance = CalculatePathLength(best_path);
+
+    // Store the initial path
+    records.second.push_back(best_path);
+    records.first = best_distance;
+
+    bool improvement = true;
+
+    // Optimization loop
+    while (improvement) {
+        improvement = false;
+
+        // Iterate over all possible triplets of indices (i, j, k)
+        for (int i = 1; i < best_path.size() - 3; ++i) {
+            for (int j = i + 1; j < best_path.size() - 2; ++j) {
+                for (int k = j + 1; k < best_path.size() - 1; ++k) {
+                    
+                    // Perform 3-opt swaps and evaluate all possible configurations
+                    std::vector<std::vector<std::string>> candidates = Generate3OptCandidates(best_path, i, j, k);
+
+                    for (const auto& new_path : candidates) {
+                        double new_distance = CalculatePathLength(new_path);
+
+                        // Update if the new path is better
+                        if (new_distance < best_distance) {
+                            best_path = new_path;
+                            best_distance = new_distance;
+                            records.second.push_back(best_path); // Track progress
+                            improvement = true;                  // Continue optimizing
+                        }
+                    }
+
+                    if (improvement) break; // Restart the loops if an improvement is found
+                }
+                if (improvement) break;
+            }
+            if (improvement) break;
+        }
+    }
+
+    records.first = best_distance; // Store the best distance
+    return records;
 }
 
-std::vector<std::string> TrojanMap::Perform3OptSwap(
-      const std::vector<std::string>& path, int i, int j, int k) {
-  std::vector<std::string> new_path;
+std::vector<std::vector<std::string>> TrojanMap::Generate3OptCandidates(
+    const std::vector<std::string>& path, int i, int j, int k) {
 
-  // 1. Reverse segment [i+1, j] and segment [j+1, k]
-  new_path.insert(new_path.end(), path.begin(), path.begin() + i + 1);
-  new_path.insert(new_path.end(), path.rbegin() + (path.size() - 1 - k), path.rbegin() + (path.size() - 1 - j));
-  new_path.insert(new_path.end(), path.rbegin() + (path.size() - 1 - j), path.rbegin() + (path.size() - 1 - i));
-  new_path.insert(new_path.end(), path.begin() + k + 1, path.end());
+    std::vector<std::vector<std::string>> candidates;
 
-  return new_path;
+    // Original path
+    candidates.push_back(path);
+
+    // Case 1: Reverse [i+1, j]
+    std::vector<std::string> case1 = path;
+    std::reverse(case1.begin() + i + 1, case1.begin() + j + 1);
+    candidates.push_back(case1);
+
+    // Case 2: Reverse [j+1, k]
+    std::vector<std::string> case2 = path;
+    std::reverse(case2.begin() + j + 1, case2.begin() + k + 1);
+    candidates.push_back(case2);
+
+    // Case 3: Reverse both [i+1, j] and [j+1, k]
+    std::vector<std::string> case3 = path;
+    std::reverse(case3.begin() + i + 1, case3.begin() + j + 1);
+    std::reverse(case3.begin() + j + 1, case3.begin() + k + 1);
+    candidates.push_back(case3);
+
+    // Case 4: Reverse [i+1, k]
+    std::vector<std::string> case4 = path;
+    std::reverse(case4.begin() + i + 1, case4.begin() + k + 1);
+    candidates.push_back(case4);
+
+    return candidates;
 }
 
 

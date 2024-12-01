@@ -377,6 +377,28 @@ void MapUI::PrintMenu() {
            "You could find your animation at src/lib/output0_2opt.avi.     \n";
     std::cout << menu;
     std::cout << "Time taken by function: " << duration.count()/1000 << " ms" << std::endl << std::endl;
+    // 3-opt
+    std::cout << "Calculating ..." << std::endl;
+    start = std::chrono::high_resolution_clock::now();
+    results = map.TravelingTrojan_3opt(locations);
+    stop = std::chrono::high_resolution_clock::now();
+    duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+    CreateAnimation(results.second, "output0_3opt.avi");
+    menu = "*************************Results******************************\n";
+    std::cout << menu;
+    menu = "TravelingTrojan_3opt\n";
+    std::cout << menu;
+    if (results.second.size() != 0) {
+      for (auto x : results.second[results.second.size() - 1]) std::cout << "\"" << x << "\",";
+      std::cout << "\nThe distance of the path is:" << results.first << " miles" << std::endl;
+      PlotPath(results.second[results.second.size() - 1]);
+    } else {
+      std::cout << "The size of the path is 0" << std::endl;
+    }
+    menu = "**************************************************************\n"
+           "You could find your animation at src/lib/output0_3opt.avi.     \n";
+    std::cout << menu;
+    std::cout << "Time taken by function: " << duration.count() / 1000 << " ms" << std::endl << std::endl;
 
     PrintMenu();
     break;

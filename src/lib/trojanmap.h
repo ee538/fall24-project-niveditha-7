@@ -186,8 +186,9 @@ void Unite(std::unordered_map<std::string, std::string>& parent, const std::stri
   void InteractivePathQuery();
 
   //----------------------------------------------------- User-defined functions
-  std::vector<std::string> Perform3OptSwap(
-      const std::vector<std::string>& path, int i, int j, int k);
+std::vector<std::vector<std::string>> Generate3OptCandidates(
+    const std::vector<std::string>& path, int i, int j, int k);
+
 };
 
 #endif

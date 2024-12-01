@@ -6,5 +6,6 @@
 /bazel-template
 /bazel-*
 /opencv
+/src/lib/output0.avi
 .DS_Store
 .idea

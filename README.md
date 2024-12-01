@@ -794,6 +794,45 @@ The distance of the path is:5.37418 miles
 You could find your animation at src/lib/output0_2opt.avi.     
 Time taken by function: 0 ms
 
+Please input the number of the places:7
+"6808093910","6380132758","441890114","8858977769","1630940839","1967750276","122888042",
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Brute_force
+"6808093910","441890114","1630940839","122888042","1967750276","8858977769","6380132758","6808093910",
+The distance of the path is:8.77622 miles
+**************************************************************
+You could find your animation at src/lib/output0.avi.          
+Time taken by function: 5 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_Backtracking
+"6808093910","6380132758","8858977769","1967750276","122888042","1630940839","441890114","6808093910",
+The distance of the path is:8.77622 miles
+**************************************************************
+You could find your animation at src/lib/output0_backtracking.avi.
+Time taken by function: 3 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_2opt
+"6808093910","6380132758","8858977769","1967750276","122888042","1630940839","441890114","6808093910",
+The distance of the path is:8.77622 miles
+**************************************************************
+You could find your animation at src/lib/output0_2opt.avi.     
+Time taken by function: 0 ms
+
+Calculating ...
+*************************Results******************************
+TravelingTrojan_3opt
+"6808093910","6380132758","8858977769","1967750276","122888042","1630940839","441890114","6808093910",
+The distance of the path is:8.77622 miles
+**************************************************************
+You could find your animation at src/lib/output0_3opt.avi.     
+Time taken by function: 1 ms
+
+
 ## Item 10: Find Nearby (Phase 3)
 
 Given an attribute name `C`, a location name `L` and a number `r` and `k`, find at most `k` locations in attribute `C` on the map near `L`(do not include `L`) with the range of `r` and return a vector of string ids. 

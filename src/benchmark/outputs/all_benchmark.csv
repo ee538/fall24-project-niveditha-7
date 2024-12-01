@@ -1,0 +1,5 @@
+name,iterations,real_time,cpu_time,time_unit,bytes_per_second,items_per_second,label,error_occurred,error_message
+"BM_Dijkstra/1",8,7.82914e+07,7.82916e+07,ns,,,,,
+"BM_Dijkstra/3",52,1.10059e+07,1.0981e+07,ns,,,,,
+"BM_BellmanFord/1",1,5.72907e+09,5.66021e+09,ns,,,,,
+"BM_BellmanFord/3",1,4.5501e+09,4.49176e+09,ns,,,,,
