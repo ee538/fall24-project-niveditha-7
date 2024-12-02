@@ -203,7 +203,7 @@ Please add you test in the [trojanmap_test_student.cc](tests/trojanmap_test_stud
 ```shell
 $ bazel test tests:trojanmap_test_student
 ```
-
+video link :https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s
 ## Item 1: Autocomplete The Location Name (Phase 1)
 
 ```c++
