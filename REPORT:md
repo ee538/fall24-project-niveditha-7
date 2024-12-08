@@ -48,7 +48,7 @@ programming, this way if the input does not correspond to a valid location it wi
 --> For example, running this function should display every category
 --> Time complexity: O (nxm)
 
-![ Get All Categories](ubuntu/images/Get All Categories.JPG)
+![ Get All Categories](ubuntu/images/GetAllCategories.JPG)
 
 ****************************************************************************************************
 ## Item 4 -  Get All Locations From Category
@@ -57,7 +57,7 @@ programming, this way if the input does not correspond to a valid location it wi
             the expected value: {"9591449441", "9591449465","5237417651"}
 --> Time complexity: O (n)
 
-![ Get All Locations From Category](ubuntu/images/Get All Locations From Category.JPG)
+![ Get All Locations From Category](ubuntu/images/GetAllLocationsFromCategory.JPG)
 
 ****************************************************************************************************
 ## Item 5 - Get location Regex   
@@ -80,7 +80,7 @@ programming, this way if the input does not correspond to a valid location it wi
 --> Time complexity: O (n x m)
 --> Time taken: 4484 ms
 
-![Shortest path](ubuntu/images/Shortest path.JPG)
+![Shortest path](ubuntu/images/Shortestpath.JPG)
 
 ****************************************************************************************************
 ### Comparison of Dijkstra and Bellman Ford
@@ -93,7 +93,7 @@ Bellman Ford (a Dynamic programming algorithm) handles graphs with negative edge
 
 The following image shows the time taken of every function according to the destination.
 
-![Comparison of Dijkstra and Bellman Ford](ubuntu/images/Dijkstra vs BellmanFord.JPG)
+![Comparison of Dijkstra and Bellman Ford](ubuntu/images/DijkstravsBellmanFord.JPG)
 
 ****************************************************************************************************
 ## Item 7 - Cycle detection
@@ -108,7 +108,7 @@ The following image shows the time taken of every function according to the dest
 --> Time taken: 16 ms
 
 See the image for reference
-![ Cycle detection](ubuntu/images/Cycle detection.JPG)
+![ Cycle detection](ubuntu/images/CycleDetection.JPG)
 
 ****************************************************************************************************
 ## Item 8 - Topological Sort
@@ -128,7 +128,7 @@ Here, {"Ralphs","KFC"} means that Tommy must go to Ralphs prior to KFC.
 --> Time complexity: O (n)
 --> Time taken: 0 ms
 
-![Topological Sort](ubuntu/images/Topological Sort.JPG)
+![Topological Sort](ubuntu/images/TopologicalSort.JPG)
 
 ****************************************************************************************************
 ## Item 9 - Traveling Trojan
@@ -150,7 +150,7 @@ It is worth noting how the time to run the function using Brute force w backtrac
 This lies in their approach to explore and solve problems. While both methods are exhaustive, backtracking 
 introduces an optimization to systematically discard solutions that cannot possibly work, reducing unnecessary computation.
 
-![Traveling Trojan](ubuntu/images/Traveling Trojan.JPG)
+![Traveling Trojan](ubuntu/images/TravelingTrojan.JPG)
 
 ****************************************************************************************************
 ## Item 9-B - Travelling Trojan 2 opt and 3opt
@@ -171,14 +171,14 @@ A good practice learnt here is to try to avoid high order polynomios/functions i
 If interesdted in seeing an animation of how Brute force, 2 opt and 3 opt animation works please see the Youtube video
  [youtube ref](https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s)
 
-![Travelling Trojan 2 opt and 3opt](ubuntu/images/2 opt and 3opt.JPG)
+![Travelling Trojan 2 opt and 3opt](ubuntu/images/2optand3opt.JPG)
 
 ****************************************************************************************************
 ## Item 9-C Performance Benchmarks: Brute Force vs. Backtracking and 2-opt vs. 3-opt in TSP
 Factorial growth of brute force O (n!) will eventually outpace the polynomial growth of 2-opt O (n²) and
 3-opt O (n³) optimizations.
 
-![ Performance Benchmarks](ubuntu/images/Brute Force vs. Backtracking and 2-opt vs. 3.JPG)
+![ Performance Benchmarks](ubuntu/images/BruteForcevsBacktracking.JPG)
 
 ****************************************************************************************************
 ## Item 10 - Find Nearby
@@ -194,18 +194,18 @@ Operation: Filter locations within a radius and sort them by distance.
 --> Time complexity: O (m log n)
 --> Time taken: 5 ms
 
-![Find Nearby](ubuntu/images/Find Nearby.JPG)
+![Find Nearby](ubuntu/images/FindNearby.JPG)
 
 ****************************************************************************************************
 ## Item 11 - Trojan Path
-This functions finds the shortest distance to visit all the locations given.
+This functions finds the shortest path and calculates the distance to visit all the locations given.
 
 --> For example, given the input: ... see image below
               the expected distance of the path: 1.86368 miles
 --> Time complexity: O ( n! )
 --> Time taken: 385 ms
 
-![Trojan Path](ubuntu/images/Trojan Path.JPG)
+![Trojan Path](ubuntu/images/TrojanPath.JPG)
 
 ****************************************************************************************************
 ## Item 12 - Check Path
@@ -218,7 +218,7 @@ to determine if current gas tank has enough fuel to take you to the desired loca
 --> Time complexity: O Q(n+m)
 --> Time taken: 438 ms
 
-![Check Path](ubuntu/images/Check Path.JPG)
+![Check Path](ubuntu/images/CheckPath.JPG)
 
 ****************************************************************************************************
 ## Item 13 - Exit
