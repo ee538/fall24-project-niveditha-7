@@ -139,6 +139,39 @@ void MapUI::PrintMenu() {
         "**************************************************************\n";
     std::cout << menu << std::endl;
     // fill in here
+    getline(std::cin, input); // Take user input for the regex pattern
+
+    try {
+        // Create a regex object from the input
+        std::regex location_regex(input);
+
+        // Measure the time taken for the function execution
+        auto start = std::chrono::high_resolution_clock::now();
+        auto results = map.GetLocationRegex(location_regex);
+        auto stop = std::chrono::high_resolution_clock::now();
+
+        // Calculate the duration
+        auto duration = std::chrono::duration_cast<std::chrono::microseconds>(stop - start);
+
+        // Display the results
+        menu = "*************************Results******************************\n";
+        std::cout << menu;
+        if (results.size() != 0) {
+            for (auto x : results) {
+                std::cout << x << std::endl;
+            }
+        } else {
+            std::cout << "No matched locations." << std::endl;
+        }
+        menu = "**************************************************************\n";
+        std::cout << menu;
+        std::cout << "Time taken by function: " << duration.count() / 1000 << " ms" << std::endl << std::endl;
+
+    } catch (const std::regex_error& e) {
+        // Handle invalid regex input
+        std::cout << "Invalid regular expression: " << e.what() << std::endl;
+    }
+
     PrintMenu();
     break;
   }
