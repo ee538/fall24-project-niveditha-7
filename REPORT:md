@@ -6,5 +6,87 @@
 ## Project Overview
 
 
+## Item 1 - Autocomplete
+Suggests locations that match a partial input name.
+
+
+## Item 2 - Find the Location
+Suggests locations that match a partial input name.
+Operation: Get the latitude and longitude by first retrieving the ID using GetID
+and then looking up the coordinates.
+
+
+## Item 2-B -  Edit Distance
+Operation: Compute the edit distance between two strings using dynamic 
+programming.
+
+
+## Item 3 -  Get All Categories
+Gets all the categorys
+
+
+## Item 4 -  Get All Locations From Category
+Finds the location of every element within a category
+
+
+## Item 5 - Get location Regex   
+
+## Item 6 -  Shortest path 
+Finds the shortest path using Dijkstra and Bellman Ford algorithm
+
+### Comparison of Dijkstra and Bellman Ford
+"Dijkstra excels with speed, while Bellman-Ford ensures correctness at a 
+higher computational cost."
+
+
+## Item 7 - Cycle detection
+Operation: Detect cycles using DFS in a subgraph.
+
+## Item 8 - Topological Sort
+The input are csv files with dependencies and then topological sort orders nodes based on 
+ the dependencies using BFS.
+
+## Item 9 - Traveling Trojan
+Provides brute force for correctness, backtracking for intermediate efficiency, and 2-opt/3-opt for 
+scalability.
+
+## Item 9-B - Travelling Trojan 2 opt and 3opt
+
+## Item 9-C Performance Benchmarks: Brute Force vs. Backtracking and 2-opt vs. 3-opt in TSP
+factorial growth of brute force (O(n!)) will eventually outpace the polynomial growth of 2-opt (O(n²)) and
+3-opt (O(n³)) optimizations.
+
+
+
+## Item 10 - Find Nearby
+Operation: Filter locations within a radius and sort them by distance.
+
+
+## Item 11 - Trojan Path
+
+
+## Item 12 - Check Path
+verifies connectivity between two nodes under constraints such as gas tank size
+to determine if current gas tank has enough fuel to take you to the places selected
+
+
+## Item 13 - Exit
+
+
+# Conclusion
+Working on advanced pathfinding algorithms like Dijkstra, Bellman-Ford, and tackling the Traveling 
+Salesperson Problem with approaches such as brute force, backtracking, and 2-opt was challenging, nevertheless, we
+gain a deeper understanding of graph theory. Along the way, it was helpful to reinforced class lectures and actually apply that 
+knowledge to a hands-on project.
+We were able to learn a lot from C++ theory , such as: recursion, pointers, and memory management and data structures too like adjacency lists and priority 
+queues to make graph operations more efficient and used regex for dynamic location-based queries. Collaborating with
+Git version control throughout the process ensured smooth teamwork and effective project management, making the 
+experience both technically enriching and rewarding. 
+
+
+
+
+
+
 
 
