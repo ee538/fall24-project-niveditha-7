@@ -319,18 +319,17 @@ The `Topological Sort` functionality determines the order in which tasks or loca
   - Input files are empty (returns an empty list).
 
 #### **Example**
- **********Given************************
-location_names = {"Ralphs", "Chick-fil-A", "KFC"}
-dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"Chick-fil-A", "KFC"}}
-Here, {"Ralphs","KFC"} means that Tommy must go to Ralphs prior to KFC.
+- **********Given****************
+- location_names = {"Ralphs", "Chick-fil-A", "KFC"}
+- dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"Chick-fil-A", "KFC"}}
+- Here, {"Ralphs","KFC"} means that Tommy must go to Ralphs prior to KFC.
 
 - **Output**:
-- For example, given an input a csv file with dependencies
-the expected output wouldbe the sorted locations for the given csv file
-  *Grand & 30th
-  *Grand & Adams
-  *University Park
-  *Jefferson/USC 
+- For example, given an input a csv file with dependencies the expected output wouldbe the sorted locations for the given csv file
+  - Grand & 30th
+  - Grand & Adams
+  - University Park
+  - Jefferson/USC 
 
 ![Topological Sort](ubuntu/images/TopologicalSort.JPG)
 
