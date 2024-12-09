@@ -572,6 +572,8 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
 1. **Union-Find Approach**:
    - The function employs a **union-find** data structure to group locations that are reachable within the gas tank constraint.
    - Each node starts as its own parent in the union-find structure.
+   - Two locations are connected (united) if the distance between them is less than or equal to the gas tank size.
+   - Union and find operations ensure that all locations within the same connected component are reachable under the fuel constraint.
 
 2. **Building Connected Components**:
    - Iterates over all locations and their neighbors.
@@ -582,7 +584,7 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
    - If they share the same component, a path exists; otherwise, it does not.
 
 4. **Interactive Path Query**:
-   - Allows users to input:
+   - Requires the user to input:
      - Start location.
      - Destination.
      - Gas tank size.
