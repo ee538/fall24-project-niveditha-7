@@ -172,8 +172,8 @@ The `CalculateShortestPath` function computes the shortest path between two loca
 
 
 #### **Performance**
-- **Dijkstra's Complexity**:`  O ((n + e) log n)) `  
-- **Bellman-Ford Complexity**: ` O (n * e)`
+- **Dijkstra's Complexity**: `O ((n + e) log n))`  
+- **Bellman-Ford Complexity**: `O (n * e)`
 - where 'n' is the number of vertices and 'e' is the number of edges.
 
 
@@ -324,12 +324,13 @@ location_names = {"Ralphs", "Chick-fil-A", "KFC"}
 dependencies = {{"Ralphs","KFC"}, {"Ralphs","Chick-fil-A"}, {"Chick-fil-A", "KFC"}}
 Here, {"Ralphs","KFC"} means that Tommy must go to Ralphs prior to KFC.
 
-- **Output**:  For example, given an input a csv file with dependencies
-               the expected output wouldbe the sorted locations for the given csv file
-                                  : Grand & 30th
-                                  : Grand & Adams
-                                  : University Park
-                                  : Jefferson/USC 
+- **Output**:
+- For example, given an input a csv file with dependencies
+the expected output wouldbe the sorted locations for the given csv file
+  *Grand & 30th
+  *Grand & Adams
+  *University Park
+  *Jefferson/USC 
 
 ![Topological Sort](ubuntu/images/TopologicalSort.JPG)
 
@@ -371,10 +372,10 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
 
 | **Method**       | **Time Complexity**     | **Accuracy**          |
 |------------------|-------------------------|-----------------------|
-| Brute Force      | (O(n!))                 | Optimal (guaranteed)  |
-| Backtracking     | (O(n!)) (pruned)        | Optimal (guaranteed)  |
-| 2-Opt            | (O(n^2))                | Approximate           |
-| 3-Opt            | (O(n^3))                | Better Approximation  |
+| Brute Force      | O (n!)                 | Optimal (guaranteed)  |
+| Backtracking     | O (n!) (pruned)        | Optimal (guaranteed)  |
+| 2-Opt            | O (n²)                | Approximate           |
+| 3-Opt            | O (n³)                | Better Approximation  |
 
 
 #### **Error Handling**
@@ -391,18 +392,17 @@ introduces an optimization to systematically discard solutions that cannot possi
 ![Traveling Trojan](ubuntu/images/TravelingTrojan.JPG)
 
 
-High level functions, in this case n**3, tend to be slower to solve, this is one reason 2 opt is faster.
+High level functions, in this case n³, tend to be slower to solve, this is one reason 2 opt is faster.
 A good practice learnt here is to try to avoid high order polynomios/functions if possible. 
-If interesdted in seeing an animation of how Brute force, 2 opt and 3 opt animation works please see the Youtube video
+If interested in seeing an animation of how Brute force, 2 opt and 3 opt animation works please see the Youtube video
  [youtube ref](https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s)
 
-![Travelling Trojan 2 opt and 3opt](ubuntu/images/2optand3opt.JPG)
 
 - **Edge Cases**:
   - If the graph contains no edges, the function returns an empty path.
   - If a valid solution cannot be found (e.g., disconnected graph), appropriate error messages are returned.
-Factorial growth of brute force ` O (n!) ` will eventually outpace the polynomial growth of 2-opt ` O (n²) ` and
-3-opt ` O (n³)` optimizations.
+Factorial growth of brute force `O (n!)` will eventually outpace the polynomial growth of 2-opt `O (n²)` and
+3-opt `O (n³)` optimizations.
 ****************************************************************************************************
 ### **9b. Traveling Trojan (Benchmarks)**
 
@@ -424,7 +424,7 @@ Benchmarks were conducted using the Google Benchmark library for input sizes ran
 
 #### **Benchmark Results**
 1. **Brute Force vs Backtracking**:
-   - As shown in the graph below, Brute Force demonstrates exponential growth in runtime with increasing input size due to its \(O(n!)\) complexity.
+   - As shown in the graph below, Brute Force demonstrates exponential growth in runtime with increasing input size due to its `O(n!)` complexity.
    - Backtracking is significantly faster, leveraging pruning to reduce the number of explored paths.
 
    ![Brute Force vs Backtracking](ubuntu/images/BrutVsBack.png)
