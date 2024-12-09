@@ -4,7 +4,7 @@
 | Name                  	| Email            	| USC ID     	|
 |-----------------------	|------------------	|------------	|
 | NIVEDITHA MADEGOWDA 	            | madegowd@usc.edu 	| 9517006149 	|
-| LEONARDO ROBLES       	| lroblesa@usc.edu 	|  	            |
+| LEONARDO ROBLES       	| lroblesa@usc.edu 	| 6431758800 	            |
 2. Link youtube: [Youtube Video Link](https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s)
 
 ## Project Overview
@@ -130,7 +130,7 @@ The `GetLocationRegex` function filters location names based on a user-provided 
 - The implementation catches this error and provides meaningful feedback to the user.
 
 ---
-![Regular Expression Matching](ubuntu/images/regex.png)
+![Regular Expression Matching](ubuntu/images/regex.jpg)
 
 ****************************************************************************************************
 ### Item 6. **Shortest Path**
@@ -141,26 +141,68 @@ The `CalculateShortestPath` function computes the shortest path between two loca
 2. **Bellman-Ford Algorithm**: Handles graphs with negative edge weights but is slower compared to Dijkstra's.
 
 #### **Implementation**
-1. **Dijkstra’s Algorithm**:
-   - Utilizes a priority queue (`std::priority_queue`) to explore the shortest paths greedily.
-   - Maintains a `distance` map to store the shortest known distance to each node.
-   - Updates the shortest distance of neighboring nodes iteratively.
-   - Terminates when the target node is reached or all nodes are explored.
+
+1. **Dijkstra's Algorithm**:
+   - **Initialization**:
+     - Retrieve the unique IDs of the start and destination locations.
+     - Initialize a priority queue to explore nodes based on the shortest known distance.
+     - Set up a `distances` map to store the shortest distance from the start node to each node, initialized to infinity, and set the distance of the start node to `0`.
+   - **Processing**:
+     - While the priority queue is not empty:
+       - Extract the node with the shortest distance.
+       - For each neighbor of the current node:
+         - Calculate the potential new distance.
+         - If the new distance is shorter than the stored distance, update it and push the neighbor into the queue.
+   - **Path Reconstruction**:
+     - Use a `predecessors` map to backtrack from the destination to the start location, constructing the shortest path.
+   - **Time Complexity**: (O((V + E) log V)), where (V) is the number of vertices and (E) is the number of edges.
 
 2. **Bellman-Ford Algorithm**:
-   - Initializes distances from the source node to all nodes as infinity, except the source itself (set to 0).
-   - Iteratively relaxes all edges in the graph for \(V-1\) iterations (\(V\) is the number of nodes).
-   - Detects negative weight cycles by checking for updates after \(V-1\) iterations.
+   - **Initialization**:
+     - Retrieve the unique IDs of the start and destination locations.
+     - Initialize a `short_distance_from_start` map with distances set to infinity, except for the start node, which is set to `0`.
+   - **Relaxation**:
+     - For (V-1) iterations (where (V) is the number of vertices):
+       - For each edge in the graph, calculate the distance from the current node to its neighbors.
+       - If a shorter distance is found, update the distance and store the predecessor.
+       - If no update occurs in an iteration, terminate early.
+   - **Path Reconstruction**:
+     - Backtrack from the destination to the start using the predecessor map to construct the path.
+   - **Time Complexity**: (O(V * E)), where (V) is the number of vertices and (E) is the number of edges.
 
-3. Path reconstruction:
-   - Once the shortest distances are computed, backtrack using a `parent` map to reconstruct the path.
 
 #### **Performance**
-- **Dijkstra's Complexity**: \(O((n + m) \log n)\)  
+- **Dijkstra's Complexity**: (O((n + m) log n))  
 - **Bellman-Ford Complexity**:O (n * m)
+- where (n) is the number of vertices and (m) is the number of edges.
 
 
 ![Shortest path](ubuntu/images/Shortestpath.JPG)
+
+** runtime of the algorithm for several examples.**
+
+| Point A to Point B      | Dijkstra | Bellman Ford optimmized| Bellman Ford non-optimized|
+| -------------------- | ----------- |-------|-----|
+|                      |  t1 (ms)    | t2 (ms)    |   t3 (ms) |
+|Ralphs to Target      |  56         | 5313  | 1506141           |
+|Chevron to Target     |  86         | 9060  | 1502278     |
+|Chase - Cheebos Burger|  163        | 6500  |  1525787    |
+|George Lucas Instructional Building to Arco                     | 94            |  7273     | 1513648     |
+|Trojan Grounds (Starbucks) to  Ralphs                     |  75           |7141       |      |
+|Chipotle to DASH                      |58             |7181       |      |
+|Hope Manor to The Pearl      |  58           | 12639      |      |
+|Dulce to the Barber Shop                     | 103           |  5682     |      |
+|Vermont & Exposition 1  to Distributing Station 31|   116         | 8302      |      |
+|Stimson House to Hoover & 28th |  63           |  8426     |      |
+|Felix Chevrolet to Pico & Grand|  156           |  9728     |      |
+| Hill & Adams to Driveway    |    72         |    10411   |      |
+| Lyons Center to Venice & Flower| 124           |  10796     |      |
+|Olive & 12th to  Lululemon |       92      |  10600     |      |
+|Grand & 39th to Chick-fil-A | 35            |  9269     |      |
+| The Coffee Bean & Tea Leaf to Birnkrant |     45        | 8485      |      |
+|                      |             |       |      |
+|                      |             |       |      |
+
 
 ****************************************************************************************************
 ### Comparison of Dijkstra and Bellman Ford
@@ -193,40 +235,38 @@ The following image shows the time taken of every function according to the dest
 The `CycleDetection` function determines whether there is a cycle in a subgraph defined by specific geographical bounds (latitude and longitude).
 
 #### **Implementation**
-1. **Extracting the Subgraph**:
-   - The function filters the graph to include only nodes within the specified geographical bounds (left, right, top, and bottom).
-   - Constructs an adjacency list for these nodes.
 
-2. **Depth-First Search (DFS)**:
-   - Implements a recursive DFS approach to traverse the subgraph.
-   - Maintains a `visited` set to track visited nodes and a `parent` map to detect back edges, indicating cycles.
+1. **Subgraph Construction**:
+   - The function takes as input a square boundary defined by four coordinates: `left`, `right`, `upper`, and `lower`.
+   - It identifies all nodes that fall within this boundary using the `GetSubgraph` helper function.
+   - Builds an adjacency list (`subgraph_map`) for the subgraph by including only edges where both nodes are inside the square.
+
+2. **Cycle Detection with DFS**:
+   - Uses a recursive helper function `DFS_CycleDetection` to traverse the graph.
    - During traversal:
-     - If a node is revisited (and it is not the direct parent), a cycle is detected.
-     - Otherwise, traversal continues.
+     - Marks nodes as visited.
+     - Recursively visits each neighbor.
+     - Detects a cycle if a neighbor has already been visited and is not the immediate parent node.
+
+3. **Edge Cases**:
+   - If the subgraph has fewer than three nodes, no cycle can exist.
+   - Handles disconnected nodes by iterating over all unvisited nodes in the subgraph.
 
 3. **Result**:
    - If a cycle is found during DFS, the function returns `true`.
    - If the DFS completes without finding a cycle, the function returns `false`.
---> Time complexity: O (n)
 --> Time taken: 16 ms
 
 #### **Performance**
-- **Time Complexity**: \(O(V + E)\), where:
-  - \(V\) is the number of nodes in the subgraph.
-  - \(E\) is the number of edges in the subgraph.
-- The adjacency list representation ensures efficient traversal.
+- **Time Complexity**: (O(V + E), where:
+  - (V): Number of nodes in the subgraph.
+  - (E): Number of edges in the subgraph.
+- **Space Complexity**: (O(V)), for storing visited nodes and recursive call stack.
 
-  #### **Error Handling**
-- Ensures the input bounds are valid.
-- Handles edge cases where the subgraph is empty or contains isolated nodes (no edges).
+ #### **Error Handling**
+- Returns `false` if the subgraph has fewer than three nodes, as a cycle is impossible.
+- Ensures only valid edges (within the square boundary) are included in the subgraph.
 
-### Additional Notes:
-- **Practical Application**: Useful in detecting loops in road networks or identifying redundant paths.
-- **Optimization**:
-  - By limiting the graph to a specific geographical area, the function reduces unnecessary computations on the entire graph.
-- **Use Case**:
-  - In urban planning or traffic analysis, cycles might indicate problematic areas where vehicles could loop indefinitely or redundant roads exist.
-See the image for reference
 ![ Cycle detection](ubuntu/images/cycle.png)
 
 ****************************************************************************************************
@@ -234,26 +274,32 @@ See the image for reference
 ### **Item 8. Topological Sort**
 
 #### **Description**
-The `TopologicalSort` function determines a linear ordering of nodes in a Directed Acyclic Graph (DAG) such that for every directed edge \( (u, v) \), node \( u \) appears before \( v \) in the ordering. This is particularly useful for tasks like task scheduling or dependency resolution.
+The `Topological Sort` functionality determines the order in which tasks or locations can be processed based on dependencies. It is designed to work with a directed acyclic graph (DAG) represented as a set of nodes (locations) and edges (dependencies).
 
 #### **Implementation**
-1. **Graph Validation**:
-   - The function first ensures that the input graph is a Directed Acyclic Graph (DAG).
-   - Cycles are detected using a DFS-based approach, as topological sorting is undefined for graphs containing cycles.
 
-2. **In-degree Calculation**:
-   - Computes the in-degree (number of incoming edges) for each node.
-   - Initializes a queue to store nodes with an in-degree of zero (no dependencies).
+1. **Input Parsing**:
+   - The function reads two input files:
+     - A CSV file containing the list of location names.
+     - A CSV file specifying the dependencies between these locations (directed edges).
 
-3. **Sorting Using DFS Algorithm**:
-   - While the queue is not empty:
-     - Remove a node from the front of the queue and add it to the result.
-     - Reduce the in-degree of all its neighbors by 1.
-     - If any neighbor’s in-degree becomes zero, add it to the queue.
-   - Repeat until all nodes are processed.
+2. **Graph Construction**:
+   - Builds a directed graph using an adjacency list representation.
+   - Creates a map of **in-degrees** to count the number of dependencies for each node:
+     - Initializes in-degrees for all nodes to `0`.
+     - Updates the in-degree count based on dependencies.
+
+3. **Node Processing**:
+   - Uses a queue to process nodes with an in-degree of `0` (no prerequisites).
+   - For each processed node:
+     - Adds the node to the result list.
+     - Decreases the in-degree of its neighbors.
+     - If a neighbor's in-degree becomes `0`, it is added to the queue.
 
 4. **Cycle Detection**:
-   - If nodes remain unprocessed and the queue is empty, the graph contains a cycle, and the sort cannot proceed.
+   - After processing all nodes:
+     - If the result list contains all input nodes, a valid topological order exists.
+     - Otherwise, the graph contains a cycle, and the function returns an empty list.
 
 #### **Example**
 - **Input**:  
@@ -269,10 +315,9 @@ The `TopologicalSort` function determines a linear ordering of nodes in a Direct
 - The adjacency list representation ensures efficient traversal and updates.
 
 #### **Error Handling**
-- Ensures the graph is a DAG before proceeding.
-- Handles disconnected components by running the algorithm on each connected component separately.
+- Handles cases where:
+  - Input files are empty (returns an empty list).
 
----
 #### **Example**
  **********Given************************
 location_names = {"Ralphs", "Chick-fil-A", "KFC"}
@@ -326,10 +371,10 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
 
 | **Method**       | **Time Complexity**       | **Accuracy**          |
 |-------------------|---------------------------|-----------------------|
-| Brute Force       | \(O(n!)\)                 | Optimal (guaranteed)  |
-| Backtracking      | \(O(n!)\) (pruned)        | Optimal (guaranteed)  |
-| 2-Opt             | \(O(n^2)\)                | Approximate           |
-| 3-Opt             | \(O(n^3)\)                | Better Approximation  |
+| Brute Force       | (O(n!))                 | Optimal (guaranteed)  |
+| Backtracking      | (O(n!)) (pruned)        | Optimal (guaranteed)  |
+| 2-Opt             | (O(n^2))                | Approximate           |
+| 3-Opt             | (O(n^3))                | Better Approximation  |
 
 
 #### **Error Handling**
@@ -461,44 +506,46 @@ The `FindNearby` function identifies all locations within a specified radius of 
 ![Find Nearby](ubuntu/images/FindNearby.JPG)
 
 ****************************************************************************************************
-### **Trojan Path**
+### **Item 11. Trojan Path**
 
 #### **Description**
-The `TrojanPath` function calculates the shortest path that visits all given locations in a specified order. It uses the **Traveling Salesperson Problem (TSP)** approach, optimizing the route to minimize the total travel distance.
+The **Trojan Path** function calculates the shortest path that visits all given locations in a specified order and returns to the starting point. 
 
 #### **Implementation**
 
-1. **Input Validation**:
-   - Ensures that the input list of locations is non-empty.
-   - Verifies that all input locations exist in the dataset.
+1. **Precomputing Pairwise Shortest Paths**:
+   - Before solving the TSP, the function uses `CalculateShortestPath_Dijkstra` to compute the shortest path between all pairs of input locations.
+   - Stores the pairwise shortest paths and distances in `path_map` and `distance_map`, respectively.
 
-2. **Path Calculation**:
-   - **Brute Force**:
-     - Generates all permutations of the input locations.
-     - Calculates the total distance for each permutation and tracks the permutation with the minimum distance.
-     - Used for smaller input sizes due to high computational complexity.
-   - **Dynamic Programming with Memoization **:
-     - Recursively solves the TSP by considering all possible paths while storing intermediate results to avoid redundant computations.
-     - Significantly reduces time complexity compared to brute force for larger datasets.
+2. **Backtracking Logic**:
+   - A recursive helper function `backtrack` explores all possible paths:
+     - **Base Case**:
+       - If all locations have been visited, the algorithm computes the round-trip distance by adding the precomputed distance from the last location back to the starting point.
+       - Updates the `min_distance` and `optimal_path` if a shorter path is found.
+     - **Recursive Case**:
+       - For each unvisited location:
+         - Add the location to `current_path`.
+         - Retrieve the distance to the next location from the precomputed `distance_map` and recursively call `backtrack`.
+         - After the recursive call, remove the location from `current_path` (backtracking step).
 
-3. **Distance Calculation**:
-   - Uses the Haversine formula to calculate the geographical distance between two locations.
+3. **Pruning**:
+   - Paths with a cumulative distance greater than the current `min_distance` are skipped to reduce unnecessary computations.
 
-4. **Path Construction**:
-   - Once the shortest path is determined, reconstructs the route as a list of location IDs or names in the optimal order.
-
-5. **Output**:
-   - Returns the ordered path and the total distance.
+4. **Edge Case Handling**:
+   - If the input list of locations is empty, the function returns an empty result.
+   - For a single location, it returns the same location with a distance of `0`.
      
 #### **Performance**
+- **Dijkstra’s Preprocessing**:
+  - **Time Complexity**: (O(V * (E + V log V))), where:
+    - (V): Number of locations.
+    - (E): Number of edges in the graph.
+      
+- **Backtracking**:
+  - **Time Complexity**: (O(n!)), where (n) is the number of input locations.
+  - Pruning reduces the effective search space, improving runtime compared to naive brute force.
 
-| **Method**          | **Time Complexity**  | **Accuracy**          |
-|----------------------|----------------------|-----------------------|
-| Brute Force          | \(O(n!)\)           | Optimal               |
-| Held-Karp Algorithm  | \(O(2^n \cdot n^2)\)| Optimal               |
-
-- **Space Complexity**:
-  - Held-Karp Algorithm requires additional memory to store intermediate results for memoization.
+- **Space Complexity**: (O(n)), due to the recursive stack and storage of the current path.
 
 #### **Error Handling**
 - Handles invalid inputs such as:
@@ -507,10 +554,6 @@ The `TrojanPath` function calculates the shortest path that visits all given loc
 - Returns appropriate messages if a valid path cannot be constructed.
 
 ### **Additional Notes**
-
-- **Optimization Techniques**:
-  - Dynamic programming significantly improves performance for mid-sized datasets.
-  - For larger datasets, heuristic approaches (e.g., 2-opt or 3-opt) can be considered for faster, approximate solutions.
 
 - **Edge Cases**:
   - Single location: Returns the same location with a distance of `0`.
@@ -527,33 +570,32 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
 
 #### **Implementation**
 
-1. **Input Validation**:
-   - Ensures that the start and destination locations are valid and exist in the dataset.
-   - Verifies that the fuel tank capacity is greater than zero.
+1. **Union-Find Approach**:
+   - The function employs a **union-find** data structure to group locations that are reachable within the gas tank constraint.
+   - Each node starts as its own parent in the union-find structure.
 
-2. **Graph Representation**:
-   - Represents the map as a weighted graph where edges represent the distances between locations.
+2. **Building Connected Components**:
+   - Iterates over all locations and their neighbors.
+   - If the distance between a location and its neighbor is less than or equal to the gas tank size, the two locations are united into the same connected component.
 
-3. **Fuel Range Constraint**:
-   - For each node, calculates the maximum distance that can be traveled with the current fuel tank capacity.
-   - Considers only nodes reachable within this range.
+3. **Query Verification**:
+   - After building the connected components, the function verifies if the start and destination locations belong to the same component.
+   - If they share the same component, a path exists; otherwise, it does not.
 
-4. **Search Algorithm**:
-   - Implements a modified Breadth-First Search (BFS) or Depth-First Search (DFS):
-     - Starts from the initial location.
-     - Tracks fuel consumption as it explores paths.
-     - Refills at gas stations when necessary and continues exploration.
-   - If the destination is reached, the function returns `true`; otherwise, it returns `false`.
+4. **Interactive Path Query**:
+   - Allows users to input:
+     - Start location.
+     - Destination.
+     - Gas tank size.
+   - Processes the input and provides feedback on whether the path exists under the given constraints.
 
-5. **Path Reconstruction**:
-   - If a valid path exists, reconstructs the sequence of locations traversed to reach the destination.
 
 #### **Performance**
-- **Time Complexity**: \(O(V + E)\), where:
+- **Time Complexity**: \(O(V * E)\), where:
   - \(V\) is the number of nodes (locations).
   - \(E\) is the number of edges (connections between locations).
 - Efficient exploration is achieved by limiting the search to nodes within the current fuel range.
-
+- **Space Complexity**: \(O(V)\), for storing the union-find parent structure.
 
 #### **Error Handling**
 - Returns `"No path exists"` if:
@@ -573,9 +615,10 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
   - Limits search space by precomputing reachable nodes within the maximum fuel range.
   - Dynamic programming can be used for larger graphs to track minimum fuel consumption for each node.
 
-- **Edge Cases**:
-  - If the start and destination are identical, returns `true` with zero fuel consumption.
-  - For an empty graph or no gas stations, returns `"No path exists"`.
+#### **Error Handling**
+- Returns `false` for invalid input cases:
+  - If either the start or destination location does not exist.
+  - If the input locations are not in a valid format..
 
 ![Check Path](ubuntu/images/CheckPath.JPG)
 
