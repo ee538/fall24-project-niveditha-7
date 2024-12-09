@@ -436,7 +436,7 @@ Benchmarks were conducted using the Google Benchmark library for input sizes ran
    - The graph below illustrates the trade-off between accuracy and runtime.
    - While 3-Opt produces better solutions, its runtime grows faster than 2-Opt due to increased complexity.
 
-   ![2-Opt vs 3-Opt](2vs3.png)
+   ![2-Opt vs 3-Opt](ubuntu/images/2vs3.png)
 
    - **Insights**:
      - For smaller input sizes, both algorithms have similar runtimes.
