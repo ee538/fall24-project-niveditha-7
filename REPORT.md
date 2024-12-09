@@ -188,20 +188,18 @@ The `CalculateShortestPath` function computes the shortest path between two loca
 |Chevron to Target     |  86         | 9060  | 1502278     |
 |Chase - Cheebos Burger|  163        | 6500  |  1525787    |
 |George Lucas Instructional Building to Arco                     | 94            |  7273     | 1513648     |
-|Trojan Grounds (Starbucks) to  Ralphs                     |  75           |7141       |      |
-|Chipotle to DASH                      |58             |7181       |      |
-|Hope Manor to The Pearl      |  58           | 12639      |      |
-|Dulce to the Barber Shop                     | 103           |  5682     |      |
-|Vermont & Exposition 1  to Distributing Station 31|   116         | 8302      |      |
-|Stimson House to Hoover & 28th |  63           |  8426     |      |
-|Felix Chevrolet to Pico & Grand|  156           |  9728     |      |
-| Hill & Adams to Driveway    |    72         |    10411   |      |
-| Lyons Center to Venice & Flower| 124           |  10796     |      |
-|Olive & 12th to  Lululemon |       92      |  10600     |      |
-|Grand & 39th to Chick-fil-A | 35            |  9269     |      |
-| The Coffee Bean & Tea Leaf to Birnkrant |     45        | 8485      |      |
-|                      |             |       |      |
-|                      |             |       |      |
+|Trojan Grounds (Starbucks) to  Ralphs                     |  75           |7141       | 155138     |
+|Chipotle to DASH                      |58             |7181       | 1271726     |
+|Hope Manor to The Pearl      |  58           | 12639      |1307101      |
+|Dulce to the Barber Shop                     | 103           |  5682     | 1347167     |
+|Vermont & Exposition 1  to Distributing Station 31|   116         | 8302      | 1440102    |
+|Stimson House to Hoover & 28th |  63           |  8426     |1510245      |
+|Felix Chevrolet to Pico & Grand|  156           |  9728     | 1456813     |
+| Hill & Adams to Driveway    |    72         |    10411   | 1540275     |
+| Lyons Center to Venice & Flower| 124           |  10796     | 1441181    |
+|Olive & 12th to  Lululemon |       92      |  10600     | 1404825     |
+|Grand & 39th to Chick-fil-A | 35            |  9269     |  1499565    |
+| The Coffee Bean & Tea Leaf to Birnkrant |     45        | 8485      | 1426243     |
 
 
 ****************************************************************************************************
@@ -213,7 +211,8 @@ The `CalculateShortestPath` function computes the shortest path between two loca
 - **Bellman-Ford Algorithm**:
   - Handles graphs with negative edge weights.
   - Useful for detecting negative weight cycles but is computationally more expensive.
-
+-  **Bellman-Ford Algorithm**:
+    The **Non-Optimized Bellman-Ford** algorithm calculates the shortest path between two locations by iteratively relaxing all edges in the graph. This version       does not include early termination when no updates occur, leading to potentially unnecessary iterations even after reaching the optimal solution. (code has been commented to prioritise optmised bellman-ford
 #### **Error Handling**
 - Ensures the start and end locations are valid nodes in the graph.
 - For Bellman-Ford, checks for the presence of negative weight cycles and handles them gracefully.
@@ -223,11 +222,7 @@ The `CalculateShortestPath` function computes the shortest path between two loca
 - **Optimization**: Dijkstra’s implementation leverages a min-heap for efficient priority queue operations.
 - **Use Case**:  
   - Input locations can be selected by name or ID. The output path is displayed as a vector of location names, along with the total distance.
-
-The following image shows the time taken of every function according to the destination.
-
-![Comparison of Dijkstra and Bellman Ford](ubuntu/images/DijkstravsBellmanFord.JPG)
-
+  
 ****************************************************************************************************
 ### **Item 7. Cycle Detection**
 
