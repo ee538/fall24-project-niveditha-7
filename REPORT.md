@@ -8,7 +8,7 @@
 2. Link youtube: [Youtube Video Link](https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s)
 
 ## Project Overview
-The TrojanMap project is a comprehensive application designed to manage and analyze geographic data using graph-based approaches. It includes functionalities such as shortest path computation, traveling salesman problem solving, and data extraction using regular expressions. The project demonstrates practical applications of algorithms for solving real-world navigation and optimization problems, tailored for the USC area. The overview of different functionalities is as follows :
+The TrojanMap project is designed to manage and analyze geographic data using graph-based approaches. It includes functionalities such as shortest path computation, traveling salesman problem solving, and data extraction using regular expressions. The project demonstrates practical applications of algorithms for solving real-world navigation and optimization problems, tailored for the USC area. The overview of different functionalities is the following :
 
 ![Project Overview](ubuntu/images/Overview.JPG)
 
@@ -84,7 +84,7 @@ Returns all unique location categories from the dataset.
 - **Output**: `["restaurant", "bank", "school", ...]`
 
 #### **Performance**
-- **Time Complexity**: ` O (m * n) `, where 'm' is the average number of attributes per location and 'n' the number of locations
+- **Time Complexity**: `O (m * n) `, where 'm' is the average number of attributes per location and 'n' the number of locations
 
 ---
 
@@ -121,12 +121,12 @@ The `GetLocationRegex` function filters location names based on a user-provided 
 4. Adds all matching location IDs to a results vector.
 5. Returns the vector containing IDs of matching locations.
 #### **Performance**
-- **Time Complexity**: ` O (n * l) `, where:
+- **Time Complexity**: `O (n * l)`, where:
   - 'n' is the number of locations.
   - 'l' is the average length of the location names.
 
 #### **Error Handling**
-- Invalid regular expressions throw a `std::regex_error`.
+- Invalid regular expressions throw a `std::regex_error`
 - The implementation catches this error and provides meaningful feedback to the user.
 
 ---
@@ -155,7 +155,7 @@ The `CalculateShortestPath` function computes the shortest path between two loca
          - If the new distance is shorter than the stored distance, update it and push the neighbor into the queue.
    - **Path Reconstruction**:
      - Use a `predecessors` map to backtrack from the destination to the start location, constructing the shortest path.
-   - **Time Complexity**: ` O ((V + E) log V)) `, where 'V' is the number of vertices and 'E' is the number of edges.
+   - **Time Complexity**: `O ((V + E) log V))`, where 'V' is the number of vertices and 'E' is the number of edges.
 
 2. **Bellman-Ford Algorithm**:
    - **Initialization**:
@@ -168,7 +168,7 @@ The `CalculateShortestPath` function computes the shortest path between two loca
        - If no update occurs in an iteration, terminate early.
    - **Path Reconstruction**:
      - Backtrack from the destination to the start using the predecessor map to construct the path.
-   - **Time Complexity**: ` O (V * E)`, where 'V' is the number of vertices and 'E' is the number of edges.
+   - **Time Complexity**: `O (V * E)`, where 'V' is the number of vertices and 'E' is the number of edges.
 
 
 #### **Performance**
@@ -258,16 +258,16 @@ The `CycleDetection` function determines whether there is a cycle in a subgraph 
 --> Time taken: 16 ms
 
 #### **Performance**
-- **Time Complexity**: ` O (V + E)`, where:
+- **Time Complexity**: `O (V + E)`, where:
   - 'V': Number of nodes in the subgraph.
   - 'E': Number of edges in the subgraph.
-- **Space Complexity**: ` O (V) `, for storing visited nodes and recursive call stack.
+- **Space Complexity**: `O (V)`, for storing visited nodes and recursive call stack.
 
  #### **Error Handling**
 - Returns `false` if the subgraph has fewer than three nodes, as a cycle is impossible.
 - Ensures only valid edges (within the square boundary) are included in the subgraph.
 
-![ Cycle detection](ubuntu/images/cycle.png)
+![Cycle detection](ubuntu/images/cycle.png)
 
 ****************************************************************************************************
 
@@ -309,7 +309,7 @@ The `Topological Sort` functionality determines the order in which tasks or loca
   - Topological Order: `[A, B, C, D, E]`
 
 #### **Performance**
-- **Time Complexity**:`  O (V + E)`, where:
+- **Time Complexity**: `O (V + E)`, where:
   - 'V' is the number of vertices.
   - 'E' is the number of edges.
 - The adjacency list representation ensures efficient traversal and updates.
@@ -384,7 +384,7 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
   - The subset contains only one or two locations (trivial solutions).
   - The graph is disconnected, preventing a complete tour.
 
-It is worth noting how the time to run the function using Brute force w backtracking decreased 66.67 %
+It is worth noting how the time to run the function using Brute force w backtracking decreased 66.67 %. 
 This lies in their approach to explore and solve problems. While both methods are exhaustive, backtracking 
 introduces an optimization to systematically discard solutions that cannot possibly work, reducing unnecessary computation.
 
@@ -392,7 +392,7 @@ introduces an optimization to systematically discard solutions that cannot possi
 
 
 High level functions, in this case n³, tend to be slower to solve, this is one reason 2 opt is faster.
-A good practice learnt here is to try to avoid high order polynomios/functions if possible. 
+A good practice learnt here is to avoid high order polynomios/functions if possible. 
 If interested in seeing an animation of how Brute force, 2 opt and 3 opt animation works please see the Youtube video
  [youtube ref](https://www.youtube.com/watch?v=5uOlsDhjrDM&t=25s)
 
@@ -481,9 +481,9 @@ The `FindNearby` function identifies all locations within a specified radius of 
 
 #### **Performance**
 - **Time Complexity**:
-  - ` O (n)` for filtering by category.
-  - ` O (n log n) ` for sorting the filtered results.
-- Overall: ` O (n log n) `, where 'n' is the number of locations in the dataset.
+  - `O (n)` for filtering by category.
+  - `O (n log n)` for sorting the filtered results.
+- Overall: `O (n log n)`, where 'n' is the number of locations in the dataset.
 
 #### **Error Handling**
 - Returns an appropriate message if:
@@ -536,15 +536,15 @@ The **Trojan Path** function calculates the shortest path that visits all given 
      
 #### **Performance**
 - **Dijkstra’s Preprocessing**:
-  - **Time Complexity**: ` O (V * (E + V log V)) `, where:
+  - **Time Complexity**: `O (V * (E + V log V))`, where:
     - 'V': Number of locations.
     - 'E': Number of edges in the graph.
       
 - **Backtracking**:
-  - **Time Complexity**: ` O (n!)`, where 'n' is the number of input locations.
+  - **Time Complexity**: `O (n!)`, where 'n' is the number of input locations.
   - Pruning reduces the effective search space, improving runtime compared to naive brute force.
 
-- **Space Complexity**: ` O (n)`, due to the recursive stack and storage of the current path.
+- **Space Complexity**: `O (n)`, due to the recursive stack and storage of the current path.
 
 #### **Error Handling**
 - Handles invalid inputs such as:
@@ -592,11 +592,11 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
 
 
 #### **Performance**
-- **Time Complexity**: ` O (V * E)`, where:
+- **Time Complexity**: `O (V * E)`, where:
   - 'V' is the number of nodes (locations).
   - 'E' is the number of edges (connections between locations).
 - Efficient exploration is achieved by limiting the search to nodes within the current fuel range.
-- **Space Complexity**: ` O (V) `, for storing the union-find parent structure.
+- **Space Complexity**: `O (V)`, for storing the union-find parent structure.
 
 #### **Error Handling**
 - Returns `"No path exists"` if:
@@ -628,8 +628,7 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
 - To exit out of the menu
 - 
 ## **Conclusion**
-
-The TrojanMap project demonstrates the application of graph theory and advanced algorithms to solve practical problems involving geographical data. By implementing a variety of functionalities such as shortest path computation, traveling salesperson problem (TSP) solutions, cycle detection, and regex-based queries, the project bridges theoretical knowledge with real-world applications.
+This project not only provided technical insights but also highlighted the importance of designing scalable and user-friendly solutions for real-world problems.
 
 Through this project, we successfully:
 - Developed an efficient graph-based navigation system for the USC area.
@@ -637,11 +636,7 @@ Through this project, we successfully:
 - Solved complex optimization problems like TSP using brute force and heuristic techniques.
 - Enhanced usability by adding features like autocomplete and category-based filtering.
 
-This project not only provided technical insights but also highlighted the importance of designing scalable and user-friendly solutions for real-world problems.
-We were able to learn a lot from C++ theory , such as: recursion, pointers, and memory management and data structures too like adjacency lists and priority 
-queues to make graph operations more efficient and used regex for dynamic location-based queries. Collaborating with
-Git version control throughout the process ensured smooth teamwork and effective project management, making the 
-experience both technically enriching and rewarding. 
+We were able to learn a lot from C++ theory, such as: recursion, pointers, and memory management and data structures too like adjacency lists and priority, queues to make graph operations more efficient and used regex for dynamic location-based queries. Collaborating with Git version control throughout the process ensured smooth teamwork and effective project management, making the  experience both technically enriching and rewarding. 
 
 ## **Lessons Learned**
 
