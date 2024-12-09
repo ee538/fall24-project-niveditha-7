@@ -26,7 +26,7 @@ The Autocomplete function retrieves all locations matching a given partial name 
 3. Returns all matching location names as a vector.
 
 #### **Performance**
-- **Time Complexity**: \O(n*m), where \(n\) is the number of locations and \(m\) is the average length of the location names.
+- **Time Complexity**: O (n*m), where 'n' is the number of locations and 'm' is the average length of the location names.
 
 ![Autocomplete](ubuntu/images/autocomplete.JPG)
 
@@ -44,7 +44,7 @@ Retrieves latitude, longitude, or ID of a location.
   - Iterates through the dataset to find the ID of the location name.
   - Returns an empty string if the name does not exist.
 #### **Performance**
-- **Time Complexity**:  O (n), where n is number of locations/nodes.
+- **Time Complexity**:  O (n), where 'n' is number of locations/nodes.
 -  Time taken: 1 ms
 
 ![Find the Location](ubuntu/images/FindLocation.JPG)
@@ -64,7 +64,7 @@ Calculates the minimum number of operations (insertions, deletions, substitution
 - **Output**: `"University of Southern California"`
 
 #### **Performance**
-- **Time Complexity**: (O(m * n)), where (m) and (n\) are the lengths of the two strings.
+- **Time Complexity**: O (m * n), where 'm' and 'n' are the lengths of the two strings.
 
 
 
@@ -84,7 +84,7 @@ Returns all unique location categories from the dataset.
 - **Output**: `["restaurant", "bank", "school", ...]`
 
 #### **Performance**
-- **Time Complexity**: (O(m * n)), where (m) and (n\), where \(n\) is the number of locations and \(m\) is the average number of attributes per location.
+- **Time Complexity**: O (m * n), where 'm' is the average number of attributes per location and 'n' the number of locations
 
 ---
 
@@ -101,7 +101,7 @@ The `GetAllLocationsFromCategory` function retrieves all locations belonging to 
 - Checks if each node's `category` matches the given input.
 - Adds the node IDs of matching locations to a results vector.
 - #### **Performance**
-- **Time Complexity**: \(O(n)\), where \(n\) is the number of locations in the dataset.
+- **Time Complexity**: O (n), where 'n' is the number of locations in the dataset.
 
 ---
 
@@ -121,9 +121,9 @@ The `GetLocationRegex` function filters location names based on a user-provided 
 4. Adds all matching location IDs to a results vector.
 5. Returns the vector containing IDs of matching locations.
 #### **Performance**
-- **Time Complexity**: \(O(n * l)\), where:
-  - \(n\) is the number of locations.
-  - \(l\) is the average length of the location names.
+- **Time Complexity**: O (n * l), where:
+  - 'n' is the number of locations.
+  - 'l' is the average length of the location names.
 
 #### **Error Handling**
 - Invalid regular expressions throw a `std::regex_error`.
@@ -155,26 +155,26 @@ The `CalculateShortestPath` function computes the shortest path between two loca
          - If the new distance is shorter than the stored distance, update it and push the neighbor into the queue.
    - **Path Reconstruction**:
      - Use a `predecessors` map to backtrack from the destination to the start location, constructing the shortest path.
-   - **Time Complexity**: (O((V + E) log V)), where (V) is the number of vertices and (E) is the number of edges.
+   - **Time Complexity**: O ((V + E) log V)), where 'V' is the number of vertices and 'E' is the number of edges.
 
 2. **Bellman-Ford Algorithm**:
    - **Initialization**:
      - Retrieve the unique IDs of the start and destination locations.
      - Initialize a `short_distance_from_start` map with distances set to infinity, except for the start node, which is set to `0`.
    - **Relaxation**:
-     - For (V-1) iterations (where (V) is the number of vertices):
+     - For (V-1) iterations (where 'V' is the number of vertices
        - For each edge in the graph, calculate the distance from the current node to its neighbors.
        - If a shorter distance is found, update the distance and store the predecessor.
        - If no update occurs in an iteration, terminate early.
    - **Path Reconstruction**:
      - Backtrack from the destination to the start using the predecessor map to construct the path.
-   - **Time Complexity**: (O(V * E)), where (V) is the number of vertices and (E) is the number of edges.
+   - **Time Complexity**: O (V * E), where 'V' is the number of vertices and 'E' is the number of edges.
 
 
 #### **Performance**
-- **Dijkstra's Complexity**: (O((n + m) log n))  
-- **Bellman-Ford Complexity**:O (n * m)
-- where (n) is the number of vertices and (m) is the number of edges.
+- **Dijkstra's Complexity**: O ((n + e) log n))  
+- **Bellman-Ford Complexity**: O (n * e)
+- where 'n' is the number of vertices and 'e' is the number of edges.
 
 
 ![Shortest path](ubuntu/images/Shortestpath.JPG)
@@ -258,10 +258,10 @@ The `CycleDetection` function determines whether there is a cycle in a subgraph 
 --> Time taken: 16 ms
 
 #### **Performance**
-- **Time Complexity**: (O(V + E), where:
-  - (V): Number of nodes in the subgraph.
-  - (E): Number of edges in the subgraph.
-- **Space Complexity**: (O(V)), for storing visited nodes and recursive call stack.
+- **Time Complexity**: O (V + E), where:
+  - 'V': Number of nodes in the subgraph.
+  - 'E': Number of edges in the subgraph.
+- **Space Complexity**: O (V), for storing visited nodes and recursive call stack.
 
  #### **Error Handling**
 - Returns `false` if the subgraph has fewer than three nodes, as a cycle is impossible.
@@ -309,9 +309,9 @@ The `Topological Sort` functionality determines the order in which tasks or loca
   - Topological Order: `[A, B, C, D, E]`
 
 #### **Performance**
-- **Time Complexity**: \(O(V + E)\), where:
-  - \(V\) is the number of vertices.
-  - \(E\) is the number of edges.
+- **Time Complexity**: O (V + E), where:
+  - 'V' is the number of vertices.
+  - 'E' is the number of edges.
 - The adjacency list representation ensures efficient traversal and updates.
 
 #### **Error Handling**
@@ -355,7 +355,7 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
    - **Cons**: Still expensive for larger datasets.
      
 3. **2-Opt Optimization**:
-   - Starts with an initial path (e.g., the order of input locations).
+   - Starts with an initial path (for example: the order of input locations).
    - Iteratively swaps two edges to check if the total distance decreases.
    - Stops when no further improvement is possible.
    - **Pros**: Significantly faster than brute force for larger datasets.
@@ -369,12 +369,12 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
 
 #### **Performance**
 
-| **Method**       | **Time Complexity**       | **Accuracy**          |
-|-------------------|---------------------------|-----------------------|
-| Brute Force       | (O(n!))                 | Optimal (guaranteed)  |
-| Backtracking      | (O(n!)) (pruned)        | Optimal (guaranteed)  |
-| 2-Opt             | (O(n^2))                | Approximate           |
-| 3-Opt             | (O(n^3))                | Better Approximation  |
+| **Method**       | **Time Complexity**     | **Accuracy**          |
+|------------------|-------------------------|-----------------------|
+| Brute Force      | (O(n!))                 | Optimal (guaranteed)  |
+| Backtracking     | (O(n!)) (pruned)        | Optimal (guaranteed)  |
+| 2-Opt            | (O(n^2))                | Approximate           |
+| 3-Opt            | (O(n^3))                | Better Approximation  |
 
 
 #### **Error Handling**
@@ -384,7 +384,7 @@ The `TravelingTrojan` function solves the Traveling Salesperson Problem (TSP) fo
   - The subset contains only one or two locations (trivial solutions).
   - The graph is disconnected, preventing a complete tour.
 
-It is worth noting how the time to run the function using Brute force w backtracking decreased 66.67 %-
+It is worth noting how the time to run the function using Brute force w backtracking decreased 66.67 %
 This lies in their approach to explore and solve problems. While both methods are exhaustive, backtracking 
 introduces an optimization to systematically discard solutions that cannot possibly work, reducing unnecessary computation.
 
@@ -478,13 +478,13 @@ The `FindNearby` function identifies all locations within a specified radius of 
    - Sorts the filtered locations in ascending order of distance.
 
 6. **Return Top Results**:
-   - Returns the top \(k\) results, where \(k\) is specified by the user.
+   - Returns the top 'k' results, where 'k' is given by the user.
 
 #### **Performance**
 - **Time Complexity**:
-  - (O(n)) for filtering by category.
-  - O(n log n)) for sorting the filtered results.
-- Overall: (O(n log n)), where (n) is the number of locations in the dataset.
+  - O (n) for filtering by category.
+  - O (n log n) for sorting the filtered results.
+- Overall: O (n log n), where 'n' is the number of locations in the dataset.
 
 #### **Error Handling**
 - Returns an appropriate message if:
@@ -537,15 +537,15 @@ The **Trojan Path** function calculates the shortest path that visits all given 
      
 #### **Performance**
 - **Dijkstra’s Preprocessing**:
-  - **Time Complexity**: (O(V * (E + V log V))), where:
-    - (V): Number of locations.
-    - (E): Number of edges in the graph.
+  - **Time Complexity**: O (V * (E + V log V)), where:
+    - 'V': Number of locations.
+    - 'E': Number of edges in the graph.
       
 - **Backtracking**:
-  - **Time Complexity**: (O(n!)), where (n) is the number of input locations.
+  - **Time Complexity**: O (n!), where 'n' is the number of input locations.
   - Pruning reduces the effective search space, improving runtime compared to naive brute force.
 
-- **Space Complexity**: (O(n)), due to the recursive stack and storage of the current path.
+- **Space Complexity**: O (n), due to the recursive stack and storage of the current path.
 
 #### **Error Handling**
 - Handles invalid inputs such as:
@@ -591,11 +591,11 @@ The `CheckPath` function determines whether a vehicle can travel from one locati
 
 
 #### **Performance**
-- **Time Complexity**: \(O(V * E)\), where:
-  - \(V\) is the number of nodes (locations).
-  - \(E\) is the number of edges (connections between locations).
+- **Time Complexity**: O (V * E), where:
+  - 'V' is the number of nodes (locations).
+  - 'E' is the number of edges (connections between locations).
 - Efficient exploration is achieved by limiting the search to nodes within the current fuel range.
-- **Space Complexity**: \(O(V)\), for storing the union-find parent structure.
+- **Space Complexity**: O (V), for storing the union-find parent structure.
 
 #### **Error Handling**
 - Returns `"No path exists"` if:
